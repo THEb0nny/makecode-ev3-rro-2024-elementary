@@ -1,61 +1,48 @@
+// Задний манипулятор в позицию сброса
+function BackManipulatorDrop () {
+    motors.mediumD.run(-50)
+    motors.mediumD.pauseUntilStalled()
+    motors.mediumD.stop()
+}
+// Раскрыть манипулятор
+function OpenManipulator () {
+    motors.mediumA.run(-20)
+    motors.mediumA.pauseUntilStalled()
+    motors.mediumA.stop()
+}
+// Поднять манипулятор
+function RaiseManipulator () {
+    motors.mediumA.run(40)
+    motors.mediumA.pauseUntilStalled()
+    motors.mediumA.stop()
+}
+function BackManipulatorStartPos () {
+    motors.mediumD.run(50)
+    motors.mediumD.pauseUntilStalled()
+    motors.mediumD.stop()
+}
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
-sensors.SetLineSensorRawRefValue(LineSensor.Left, 2416, 1760)
-sensors.SetLineSensorRawRefValue(LineSensor.Right, 2296, 1684)
+sensors.SetLineSensorRawRefValue(LineSensor.Left, 2412, 1772)
+sensors.SetLineSensorRawRefValue(LineSensor.Right, 2340, 1680)
 chassis.setSeparatelyChassisMotors(motors.mediumB, motors.mediumC, true, false)
 chassis.setWheelRadius(62.4, MeasurementUnit.Millimeters)
 chassis.setBaseLength(180, MeasurementUnit.Millimeters)
 chassis.setRegulatorGains(0.02, 0, 0.5)
 motions.SetDistRollingAfterInsetsection(50)
 motions.SetDistRollingAfterIntersectionMoveOut(20)
+motions.SetLineFollowLoopDt(5)
 motors.mediumA.setBrake(true)
 motors.mediumA.setInverted(true)
+motors.mediumD.setBrake(true)
 control.runInParallel(function () {
-    motors.mediumA.run(-20)
-    motors.mediumA.pauseUntilStalled()
-    motors.mediumA.stop()
+    // Раскрыть манипулятор перед стартом
+    OpenManipulator()
+    BackManipulatorStartPos()
 })
+brick.printString("PRESS TO RUN", 7, 10)
+brick.setStatusLight(StatusLight.GreenPulse)
 brick.buttonEnter.pauseUntil(ButtonEvent.Bumped)
+brick.showPorts()
+brick.setStatusLight(StatusLight.Off)
+// Старт
 pause(200)
-control.runInParallel(function () {
-    pause(700)
-    motors.mediumA.run(40, 180, MoveUnit.Degrees)
-})
-chassis.pivotTurn(16, 40, WheelPivot.LeftWheel)
-pause(100)
-chassis.RampLinearDistMove(50, 230, 20, 60)
-pause(500)
-motors.mediumA.run(40)
-motors.mediumA.pauseUntilStalled()
-motors.mediumA.stop()
-pause(100)
-chassis.pivotTurn(-70, -40, WheelPivot.RightWheel)
-control.runInParallel(function () {
-    motors.mediumA.run(-70)
-    motors.mediumA.pauseUntilStalled()
-    motors.mediumA.stop()
-})
-pause(500)
-chassis.LinearDistMove(30, -50, true)
-pause(100)
-control.runInParallel(function () {
-    motors.mediumA.run(40, 145, MoveUnit.Degrees)
-})
-chassis.spinTurn(90, 30)
-pause(100)
-chassis.RampLinearDistMove(30, 55, 10, 30)
-pause(500)
-motors.mediumA.run(40)
-motors.mediumA.pauseUntilStalled()
-motors.mediumA.stop()
-pause(500)
-chassis.LinearDistMove(160, -40, true)
-pause(100)
-chassis.spinTurn(90, 30)
-pause(100)
-control.runInParallel(function () {
-    motors.mediumA.run(-70)
-    motors.mediumA.pauseUntilStalled()
-    motors.mediumA.stop()
-})
-chassis.LinearDistMove(100, 50, false)
-motions.LineFollowToIntersection(AfterMotion.DecelRolling, custom.SetEmptyLineFollowParams())
