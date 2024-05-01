@@ -3,7 +3,7 @@
     "description": "",
     "dependencies": {
         "ev3": "*",
-        "Promrobo21": "github:theb0nny/makecode-ev3-promrobo21#v1.4.4"
+        "Promrobo21": "github:theb0nny/makecode-ev3-promrobo21#v1.4.8"
     },
     "files": [
         "main.blocks",
