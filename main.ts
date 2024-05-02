@@ -36,10 +36,15 @@ function RemoveBlackSoil () {
         chassis.LinearDistMove(50, 30, Braking.Hold)
         pause(10)
         chassis.RampLinearDistMoveWithoutBraking(-10, -40, 280, 30)
-    } else {
-        chassis.RampLinearDistMoveWithoutBraking(-10, -40, 100, 30)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -40, AfterMotion.BreakStop)
     }
+    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.NoStop)
+    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 20, 0, -20, AfterMotion.BreakStop)
+    pause(50)
+    chassis.LinearDistMove(30, 30, Braking.Hold)
+    pause(50)
+    chassis.spinTurn(-90, 30)
+    pause(50)
+    motions.LineFollowToDistance(170, AfterMotion.BreakStop)
     // Конец программы
     pause(5000)
     brick.exitProgram()
