@@ -13,7 +13,7 @@ function RemoveBlackSoil () {
     motions.LineFollowToIntersection(AfterMotion.BreakStop)
     pause(100)
     chassis.spinTurn(180, 30)
-    pause(100)
+    pause(50)
     motions.LineFollowToDistance(155, AfterMotion.BreakStop)
     pause(50)
     chassis.spinTurn(90, 30)
@@ -35,7 +35,6 @@ function RemoveBlackSoil () {
     if (returnColor == 1) {
         chassis.LinearDistMove(50, 30, Braking.Hold)
         pause(10)
-        chassis.RampLinearDistMoveWithoutBraking(-10, -40, 280, 30)
     }
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.NoStop)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 20, 0, -20, AfterMotion.BreakStop)
@@ -51,13 +50,15 @@ function RemoveBlackSoil () {
 }
 // Задний манипулятор в позицию сброса
 function BackManipulatorDrop () {
-    motors.mediumD.run(-35)
+    motors.mediumD.run(-30)
     motors.mediumD.pauseUntilStalled()
     motors.mediumD.stop()
 }
 function RgbToHsvlToColorConvert (debug: boolean) {
     rgbCS = sensors.color3.rgbRaw()
     for (let i = 0; i <= 2; i++) {
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         rgbCS[i] = Math.map(rgbCS[i], sensors.minRgbColorSensor3[i], sensors.maxRgbColorSensor3[i], 0, 255)
@@ -104,13 +105,14 @@ function CapturingVegetablesAtZone2 () {
     pause(100)
     OpenManipulator()
 }
+// Функция захвата овощей при старте
 function CapturingVegetablesAtStart () {
     // Манипулятор призакрыть, чтобы клешни манипулятора не касались других фигур
     control.runInParallel(function () {
         pause(500)
         motors.mediumA.run(40, 180, MoveUnit.Degrees)
     })
-    chassis.pivotTurn(17, 40, WheelPivot.LeftWheel)
+    chassis.pivotTurn(17, 30, WheelPivot.LeftWheel)
     pause(100)
     chassis.RampLinearDistMove(10, 30, 235, 20, 60)
     // Поднять фигурку
@@ -277,7 +279,7 @@ control.runInParallel(function () {
 })
 brick.printString("PRESS TO RUN", 7, 10)
 brick.setStatusLight(StatusLight.GreenPulse)
-brick.buttonEnter.pauseUntil(ButtonEvent.Bumped)
+brick.buttonRight.pauseUntil(ButtonEvent.Bumped)
 brick.showPorts()
 brick.setStatusLight(StatusLight.Off)
 // Время после старта, чтобы убрать руки
