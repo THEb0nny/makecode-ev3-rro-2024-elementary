@@ -27,12 +27,12 @@ function RemoveBlackSoil () {
     pause(50)
     chassis.LinearDistMove(50, 30, Braking.Hold)
     for (let index = 0; index < 10; index++) {
-        returnColor = RgbToHsvlToColorConvert(true)
+        figureСolor = RgbToHsvlToColorConvert(true)
         pause(10)
     }
     brick.clearScreen()
-    brick.printValue("color", returnColor, 1)
-    if (returnColor == 1) {
+    brick.printValue("color", figureСolor, 1)
+    if (figureСolor == 1) {
         chassis.LinearDistMove(50, 30, Braking.Hold)
         pause(10)
     }
@@ -57,6 +57,10 @@ function BackManipulatorDrop () {
 function RgbToHsvlToColorConvert (debug: boolean) {
     rgbCS = sensors.color3.rgbRaw()
     for (let i = 0; i <= 2; i++) {
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
@@ -98,7 +102,7 @@ function CapturingVegetablesAtZone2 () {
     chassis.pivotTurn(-45, -40, WheelPivot.LeftWheel)
     motions.MoveToRefZone(SensorSelection.OnlyLeft, LogicalOperators.Greater, 90, 0, 15, AfterMotion.BreakStop)
     for (let index = 0; index < 10; index++) {
-        returnColor = RgbToHsvlToColorConvert(true)
+        figureСolor = RgbToHsvlToColorConvert(true)
         pause(10)
     }
     RaiseManipulator()
@@ -249,7 +253,7 @@ let column = 0
 let color = 0
 let hsvlCS: number[] = []
 let rgbCS: number[] = []
-let returnColor = 0
+let figureСolor = 0
 let tmp: number[] = []
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
 sensors.SetLineSensorRawRefValue(LineSensor.Left, 2552, 1744)
@@ -258,7 +262,8 @@ sensors.SetLineSensorRawRefValue(LineSensor.Right, 2448, 1660)
 sensors.SetColorSensorMinRgbValues(sensors.color3, [0, 1, 2])
 // Установить датчику определения фигур максимальные значения RGB
 sensors.SetColorSensorMaxRgbValues(sensors.color3, [204, 190, 243])
-for (let index = 0; index < 4; index++) {
+// Заспамить командой, чтобы датчик цвета включился в режиме цвета
+for (let index = 0; index < 10; index++) {
     tmp = sensors.color3.rgbRaw()
     pause(10)
 }
@@ -269,28 +274,31 @@ chassis.setSyncRegulatorGains(0.02, 0, 0.5)
 motions.SetDistRollingAfterInsetsection(50)
 motions.SetDistRollingAfterIntersectionMoveOut(20)
 motions.SetLineFollowLoopDt(5)
-motors.mediumA.setBrake(true)
 motors.mediumA.setInverted(true)
+motors.mediumA.setBrake(true)
 motors.mediumD.setBrake(true)
 control.runInParallel(function () {
     // Раскрыть манипулятор перед стартом
     OpenManipulator()
+    // Задний манипулятор на стартовую позицию
     BackManipulatorStartPos()
 })
 brick.printString("PRESS TO RUN", 7, 10)
 brick.setStatusLight(StatusLight.GreenPulse)
+// По кнопке вправо старт программы
 brick.buttonRight.pauseUntil(ButtonEvent.Bumped)
 brick.showPorts()
 brick.setStatusLight(StatusLight.Off)
 // Время после старта, чтобы убрать руки
 pause(200)
-if (true) {
-    // Часть 1 - захватить все овощи после старта
-    CapturingVegetablesAtStart()
-    pause(100)
-    DumpingCompost()
-    pause(100)
-    TransportationToMarket()
-    pause(100)
-}
+// Часть 1 - захватить все овощи после старта
+CapturingVegetablesAtStart()
+pause(100)
+// Часть 2 - сброс жёлтых овощей в компост
+DumpingCompost()
+pause(100)
+// Часть 3 - сброс красных овощей в компост
+TransportationToMarket()
+pause(100)
+// Часть 4 - вытолкнуть чернозём
 RemoveBlackSoil()
