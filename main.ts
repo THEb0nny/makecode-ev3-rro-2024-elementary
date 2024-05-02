@@ -25,7 +25,7 @@ function CheckingAndPushingOutBlackSoil () {
         }
         pause(100)
         motions.MoveToRefZone(SensorSelection.LeftAndRight, LogicalOperators.Greater, 90, 0, -20, AfterMotion.NoBreakStop)
-        pause(200)
+        pause(100)
         motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 20, 0, -20, AfterMotion.BreakStop)
         pause(50)
         chassis.LinearDistMove(30, 30, Braking.Hold)
@@ -68,9 +68,26 @@ function BackManipulatorDrop () {
     motors.mediumD.pauseUntilStalled()
     motors.mediumD.stop()
 }
+// Едем домой
+function GoHome () {
+    motions.SetLineFollowRefTreshold(70)
+    motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(25, 0.3, 1.5))
+    // Если нужно повернуть в зону финиша, то ИСТИНУ ставить
+    if (false) {
+        pause(50)
+        chassis.pivotTurn(90, 50, WheelPivot.LeftWheel)
+    }
+    // Конец программы
+    pause(1000)
+    music.playSoundEffectUntilDone(sounds.informationStop)
+}
 function RgbToHsvlToColorConvert (debug: boolean) {
     rgbCS = sensors.color3.rgbRaw()
     for (let i = 0; i <= 2; i++) {
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
@@ -307,30 +324,22 @@ pause(200)
 if (false) {
     // Часть 1 - захватить все овощи после старта
     CapturingVegetablesAtStart()
-    pause(100)
+    pause(50)
 }
 if (false) {
     // Часть 2 - сброс жёлтых овощей в компост
     DumpingCompost()
-    pause(100)
+    pause(50)
 }
 if (false) {
     // Часть 3 - сброс красных овощей в компост
     TransportationToMarket()
-    pause(100)
+    pause(50)
 }
 // Часть 4 - вытолкнуть чернозём
 RemoveBlackSoil()
-pause(100)
-motions.SetLineFollowRefTreshold(70)
-motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(25, 0.3, 1.5))
-if (false) {
-    pause(50)
-    chassis.pivotTurn(90, 50, WheelPivot.LeftWheel)
-}
-// Конец программы
-pause(1000)
-music.playSoundEffectUntilDone(sounds.informationStop)
+pause(50)
+GoHome()
 // Конец программы
 pause(5000)
 brick.exitProgram()
