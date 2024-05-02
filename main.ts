@@ -1,5 +1,5 @@
 function DumpingСompost () {
-    motions.LineFollowToDistance(300, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.5, 1.5))
+    motions.LineFollowToDistance(250, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.5, 1.5))
     motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(50, 0.5, 1.5))
     pause(100)
     chassis.spinTurn(135, 40)
@@ -8,9 +8,9 @@ function DumpingСompost () {
     pause(100)
     for (let index = 0; index < 2; index++) {
         BackManipulatorDrop()
-        pause(150)
+        pause(200)
         BackManipulatorStartPos()
-        pause(150)
+        pause(200)
     }
     RaiseManipulator()
     pause(10)
@@ -98,24 +98,27 @@ function TransportationToMarket () {
     levelings.LineAlignment(VerticalLineLocation.Behind, 200)
     // Конец программы
     pause(100)
-    chassis.RampLinearDistMove(10, 50, 520, 50, 50)
+    chassis.RampLinearDistMove(10, 50, 380, 50, 50)
+    // Конец программы
+    pause(1000)
+    chassis.pivotTurn(85, 30, WheelPivot.RightWheel)
     // Конец программы
     pause(100)
-    chassis.spinTurn(-140, 30)
+    chassis.pivotTurn(85, 30, WheelPivot.LeftWheel)
+    levelings.LineAlignment(VerticalLineLocation.Front, 200)
     // Конец программы
     pause(100)
-    chassis.RampLinearDistMove(-10, -40, 80, 20, 20)
+    chassis.spinTurn(180, 30)
     pause(100)
     for (let index = 0; index < 3; index++) {
         BackManipulatorDrop()
-        pause(150)
+        pause(200)
         BackManipulatorStartPos()
-        pause(150)
+        pause(200)
     }
+    chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
     pause(100)
-    chassis.pivotTurn(-130, 30, WheelPivot.LeftWheel)
-    pause(2000)
-    chassis.RampLinearDistMove(10, 40, 1100, 20, 50)
+    chassis.RampLinearDistMove(10, 50, 900, 20, 50)
 }
 // Раскрыть манипулятор
 function OpenManipulator () {
