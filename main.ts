@@ -193,7 +193,7 @@ function CapturingVegetablesAtStart () {
     chassis.LinearDistMove(10, 30, Braking.Hold)
     pause(50)
     motors.mediumA.run(40, 280, MoveUnit.Degrees)
-    pause(500)
+    pause(100)
     chassis.LinearDistMove(100, -30, Braking.Hold)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
     pause(50)
