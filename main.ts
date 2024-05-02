@@ -22,14 +22,14 @@ function DumpingСompost () {
 }
 // Задний манипулятор в позицию сброса
 function BackManipulatorDrop () {
-    motors.mediumD.run(-50)
+    motors.mediumD.run(-35)
     motors.mediumD.pauseUntilStalled()
     motors.mediumD.stop()
 }
 function CapturingVegetablesAtStart () {
     // Манипулятор призакрыть, чтобы клешни манипулятора не касались других фигур
     control.runInParallel(function () {
-        pause(600)
+        pause(500)
         motors.mediumA.run(40, 180, MoveUnit.Degrees)
     })
     chassis.pivotTurn(17, 40, WheelPivot.LeftWheel)
@@ -100,7 +100,7 @@ function TransportationToMarket () {
     pause(100)
     chassis.RampLinearDistMove(10, 50, 380, 50, 50)
     // Конец программы
-    pause(1000)
+    pause(100)
     chassis.pivotTurn(85, 30, WheelPivot.RightWheel)
     // Конец программы
     pause(100)
@@ -110,7 +110,7 @@ function TransportationToMarket () {
     pause(100)
     chassis.spinTurn(180, 30)
     pause(100)
-    for (let index = 0; index < 3; index++) {
+    for (let index = 0; index < 5; index++) {
         BackManipulatorDrop()
         pause(200)
         BackManipulatorStartPos()
@@ -118,7 +118,17 @@ function TransportationToMarket () {
     }
     chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
     pause(100)
-    chassis.RampLinearDistMove(10, 50, 900, 20, 50)
+    chassis.RampLinearDistMove(10, 60, 960, 20, 50)
+    pause(100)
+    chassis.spinTurn(-90, 30)
+    pause(100)
+    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 20, AfterMotion.BreakStop)
+    levelings.LineAlignment(VerticalLineLocation.Front, 200)
+    pause(100)
+    chassis.pivotTurn(-45, -40, WheelPivot.RightWheel)
+    pause(100)
+    chassis.pivotTurn(-45, -40, WheelPivot.LeftWheel)
+    motions.MoveToRefZone(SensorSelection.OnlyLeft, LogicalOperators.Greater, 90, 0, 15, AfterMotion.BreakStop)
 }
 // Раскрыть манипулятор
 function OpenManipulator () {
@@ -139,8 +149,8 @@ function BackManipulatorStartPos () {
     motors.mediumD.stop()
 }
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
-sensors.SetLineSensorRawRefValue(LineSensor.Left, 2460, 1740)
-sensors.SetLineSensorRawRefValue(LineSensor.Right, 2368, 1664)
+sensors.SetLineSensorRawRefValue(LineSensor.Left, 2496, 1740)
+sensors.SetLineSensorRawRefValue(LineSensor.Right, 2320, 1584)
 chassis.setSeparatelyChassisMotors(motors.mediumB, motors.mediumC, true, false)
 chassis.setWheelRadius(62.4, MeasurementUnit.Millimeters)
 chassis.setBaseLength(180, MeasurementUnit.Millimeters)
@@ -165,9 +175,9 @@ brick.setStatusLight(StatusLight.Off)
 pause(200)
 // Часть 1 - захватить все овощи после старта
 CapturingVegetablesAtStart()
-pause(500)
+pause(100)
 DumpingСompost()
-pause(500)
+pause(100)
 TransportationToMarket()
 // Конец программы
 pause(5000)
