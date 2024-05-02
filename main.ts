@@ -1,5 +1,45 @@
+// Проверка и выталкивание чернозёма с одной стороны
+function CheckingAndPushingOutBlackSoil () {
+    for (let index = 0; index <= 2; index++) {
+        chassis.spinTurn(90, 30)
+        pause(50)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
+        levelings.LineAlignment(VerticalLineLocation.Behind, 300, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3))
+        pause(50)
+        chassis.LinearDistMove(60, 30, Braking.NoStop)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 30, AfterMotion.BreakStop)
+        levelings.LineAlignment(VerticalLineLocation.Front, 300)
+        pause(50)
+        chassis.LinearDistMove(40, 30, Braking.Hold)
+        colors = []
+        for (let index2 = 0; index2 < 10; index2++) {
+            colors.push(RgbToHsvlToColorConvert(true))
+            pause(15)
+        }
+        figureСolor = custom.MostFrequentNumber(colors)
+        brick.clearScreen()
+        brick.printValue("color", figureСolor, 1)
+        // Если фигурка чёрная
+        if (figureСolor == 1 || figureСolor == 0) {
+            chassis.LinearDistMove(95, 30, Braking.Hold)
+        }
+        pause(100)
+        motions.MoveToRefZone(SensorSelection.LeftAndRight, LogicalOperators.Greater, 90, 0, -20, AfterMotion.NoBreakStop)
+        pause(200)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 20, 0, -20, AfterMotion.BreakStop)
+        pause(50)
+        chassis.LinearDistMove(30, 30, Braking.Hold)
+        pause(50)
+        chassis.spinTurn(-90, 30)
+        pause(50)
+        if (index < 2) {
+            motions.LineFollowToDistance(180, AfterMotion.BreakStop)
+        }
+    }
+}
+// Часть с выталкиванием чернозёма с двух сторон
 function RemoveBlackSoil () {
-    if (true) {
+    if (false) {
         chassis.pivotTurn(90, 30, WheelPivot.RightWheel)
         pause(50)
         chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
@@ -10,47 +50,17 @@ function RemoveBlackSoil () {
         chassis.spinTurn(90, 30)
         pause(50)
     }
-    motions.LineFollowToIntersection(AfterMotion.BreakStop)
+    motions.LineFollowToIntersection(AfterMotion.BreakStop, params.SetFourLineFollowParams(40, 0.4, 1.5))
     pause(100)
     chassis.spinTurn(180, 30)
     pause(50)
     motions.LineFollowToDistance(155, AfterMotion.BreakStop)
     pause(50)
-    for (let index = 0; index <= 3; index++) {
-        chassis.spinTurn(90, 30)
-        pause(50)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
-        levelings.LineAlignment(VerticalLineLocation.Behind, 300)
-        pause(50)
-        chassis.LinearDistMove(70, 30, Braking.NoStop)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 30, AfterMotion.BreakStop)
-        levelings.LineAlignment(VerticalLineLocation.Front, 300)
-        pause(50)
-        chassis.LinearDistMove(50, 30, Braking.Hold)
-        colors = []
-        for (let index2 = 0; index2 < 10; index2++) {
-            colors.push(RgbToHsvlToColorConvert(true))
-            pause(10)
-        }
-        figureСolor = custom.MostFrequentNumber(colors)
-        brick.clearScreen()
-        brick.printValue("color", figureСolor, 1)
-        // Если фигурка чёрная
-        if (figureСolor == 1 || figureСolor == 0) {
-            chassis.LinearDistMove(50, 30, Braking.Hold)
-        }
-        pause(100)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.NoStop)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 20, 0, -20, AfterMotion.BreakStop)
-        pause(50)
-        chassis.LinearDistMove(30, 30, Braking.Hold)
-        pause(50)
-        chassis.spinTurn(-90, 30)
-        pause(50)
-        if (index < 3) {
-            motions.LineFollowToDistance(170, AfterMotion.BreakStop)
-        }
-    }
+    CheckingAndPushingOutBlackSoil()
+    pause(100)
+    motions.LineFollowToDistance(450, AfterMotion.BreakStop)
+    pause(100)
+    CheckingAndPushingOutBlackSoil()
 }
 // Задний манипулятор в позицию сброса
 function BackManipulatorDrop () {
@@ -164,7 +174,7 @@ function CapturingVegetablesAtStart () {
     pause(100)
     chassis.LinearDistMove(10, 30, Braking.Hold)
     pause(50)
-    motors.mediumA.run(40, 300, MoveUnit.Degrees)
+    motors.mediumA.run(40, 280, MoveUnit.Degrees)
     pause(500)
     chassis.LinearDistMove(100, -30, Braking.Hold)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
@@ -212,10 +222,10 @@ function TransportationToMarket () {
     chassis.RampLinearDistMove(10, 50, 380, 50, 50)
     // Конец программы
     pause(50)
-    chassis.pivotTurn(83, 30, WheelPivot.RightWheel)
+    chassis.pivotTurn(85, 30, WheelPivot.RightWheel)
     // Конец программы
     pause(50)
-    chassis.pivotTurn(83, 30, WheelPivot.LeftWheel)
+    chassis.pivotTurn(85, 30, WheelPivot.LeftWheel)
     // Конец программы
     pause(50)
     levelings.LineAlignment(VerticalLineLocation.Front, 300)
@@ -254,6 +264,7 @@ let hsvlCS: number[] = []
 let rgbCS: number[] = []
 let figureСolor = 0
 let colors: number[] = []
+music.setVolume(8)
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
 sensors.SetLineSensorRawRefValue(LineSensor.Left, 2552, 1744)
 sensors.SetLineSensorRawRefValue(LineSensor.Right, 2448, 1660)
@@ -290,17 +301,27 @@ brick.showPorts()
 brick.setStatusLight(StatusLight.Off)
 // Время после старта, чтобы убрать руки
 pause(200)
-// Часть 1 - захватить все овощи после старта
-CapturingVegetablesAtStart()
-pause(100)
-// Часть 2 - сброс жёлтых овощей в компост
-DumpingCompost()
-pause(100)
-// Часть 3 - сброс красных овощей в компост
-TransportationToMarket()
-pause(100)
+if (false) {
+    // Часть 1 - захватить все овощи после старта
+    CapturingVegetablesAtStart()
+    pause(100)
+}
+if (false) {
+    // Часть 2 - сброс жёлтых овощей в компост
+    DumpingCompost()
+    pause(100)
+}
+if (false) {
+    // Часть 3 - сброс красных овощей в компост
+    TransportationToMarket()
+    pause(100)
+}
 // Часть 4 - вытолкнуть чернозём
 RemoveBlackSoil()
+pause(100)
+motions.SetLineFollowRefTreshold(70)
+motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(25, 0.3, 1.5))
+music.playSoundEffectUntilDone(sounds.informationStop)
 // Конец программы
 pause(5000)
 brick.exitProgram()

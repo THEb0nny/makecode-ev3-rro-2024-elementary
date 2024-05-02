@@ -9,26 +9,34 @@ namespace custom {
     //% block.loc.ru="получить наиболее часто встречающийся элемент из массива $arr"
     //% weight="89"
     export function MostFrequentNumber(arr: number[]): number {
-        // Создаем объект для подсчета встречающихся значений
-        let counts: number[];
-        let maxCount = 0;
-        let mostFrequentElement = null;
+        // Сортируем массив для более эффективного подсчета частоты
+        arr.sort((a, b) => a - b);
 
-        // Проходимся по массиву и увеличиваем счетчик для каждого элемента
-        for (let i = 0; i < arr.length; i++) {
-            let element = arr[i];
-            if (counts[element] === undefined) {
-                counts[element] = 1;
+        let maxCount = 0;
+        let currentNum = arr[0];
+        let mostFrequentNum = arr[0];
+        let currentCount = 1;
+
+        // Проходим по отсортированному массиву, подсчитывая частоту каждого числа
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i] === currentNum) {
+                currentCount++;
             } else {
-                counts[element]++;
-            }
-            // Обновляем максимальное количество встреч для элемента
-            if (counts[element] > maxCount) {
-                maxCount = counts[element];
-                mostFrequentElement = element;
+                if (currentCount > maxCount) {
+                    maxCount = currentCount;
+                    mostFrequentNum = currentNum;
+                }
+                currentNum = arr[i];
+                currentCount = 1;
             }
         }
-        return mostFrequentElement;
+
+        // Проверяем последнее число
+        if (currentCount > maxCount) {
+            mostFrequentNum = currentNum;
+        }
+
+        return mostFrequentNum;
     }
 
 }
