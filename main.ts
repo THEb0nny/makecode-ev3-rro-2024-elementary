@@ -58,7 +58,7 @@ function RemoveBlackSoil () {
     pause(50)
     CheckingAndPushingOutBlackSoil()
     pause(100)
-    motions.LineFollowToDistance(450, AfterMotion.BreakStop)
+    motions.LineFollowToDistance(460, AfterMotion.BreakStop)
     pause(100)
     CheckingAndPushingOutBlackSoil()
 }
@@ -96,6 +96,7 @@ function RgbToHsvlToColorConvert (debug: boolean) {
     }
     return color
 }
+// Часть перемещения ко второй зоне с овощами
 function CapturingVegetablesAtZone2 () {
     chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
     pause(50)
@@ -183,6 +184,7 @@ function CapturingVegetablesAtStart () {
     pause(100)
     chassis.spinTurn(90, 30)
 }
+// Часть сброса компоста
 function DumpingCompost () {
     motions.LineFollowToDistance(250, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.4, 1.5))
     motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(40, 0.4, 1.5))
@@ -205,6 +207,7 @@ function DumpingCompost () {
         OpenManipulator()
     })
 }
+// Часть перемещения на рынок
 function TransportationToMarket () {
     motions.LineFollowToDistance(130, AfterMotion.Rolling, params.SetFourLineFollowParams(30, 0.5, 1.5))
     chassis.spinTurn(-90, 30)
@@ -264,7 +267,7 @@ let hsvlCS: number[] = []
 let rgbCS: number[] = []
 let figureСolor = 0
 let colors: number[] = []
-music.setVolume(8)
+music.setVolume(10)
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
 sensors.SetLineSensorRawRefValue(LineSensor.Left, 2552, 1744)
 sensors.SetLineSensorRawRefValue(LineSensor.Right, 2448, 1660)
@@ -321,6 +324,12 @@ RemoveBlackSoil()
 pause(100)
 motions.SetLineFollowRefTreshold(70)
 motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(25, 0.3, 1.5))
+if (false) {
+    pause(50)
+    chassis.pivotTurn(90, 50, WheelPivot.LeftWheel)
+}
+// Конец программы
+pause(1000)
 music.playSoundEffectUntilDone(sounds.informationStop)
 // Конец программы
 pause(5000)
