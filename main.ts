@@ -1,3 +1,49 @@
+function RemoveBlackSoil () {
+    if (true) {
+        chassis.pivotTurn(90, 30, WheelPivot.RightWheel)
+        pause(50)
+        chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 40, AfterMotion.BreakStop)
+        levelings.LineAlignment(VerticalLineLocation.Front, 300)
+        chassis.LinearDistMove(40, 30, Braking.Hold)
+        pause(50)
+        chassis.spinTurn(90, 30)
+        pause(50)
+    }
+    motions.LineFollowToIntersection(AfterMotion.BreakStop)
+    pause(100)
+    chassis.spinTurn(180, 30)
+    pause(100)
+    motions.LineFollowToDistance(155, AfterMotion.BreakStop)
+    pause(50)
+    chassis.spinTurn(90, 30)
+    pause(50)
+    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
+    levelings.LineAlignment(VerticalLineLocation.Behind, 300)
+    pause(50)
+    chassis.LinearDistMove(70, 30, Braking.NoStop)
+    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 30, AfterMotion.BreakStop)
+    levelings.LineAlignment(VerticalLineLocation.Front, 300)
+    pause(50)
+    chassis.LinearDistMove(50, 30, Braking.Hold)
+    for (let index = 0; index < 10; index++) {
+        returnColor = RgbToHsvlToColorConvert(true)
+        pause(10)
+    }
+    brick.clearScreen()
+    brick.printValue("color", returnColor, 1)
+    if (returnColor == 1) {
+        chassis.LinearDistMove(50, 30, Braking.Hold)
+        pause(10)
+        chassis.RampLinearDistMoveWithoutBraking(-10, -40, 280, 30)
+    } else {
+        chassis.RampLinearDistMoveWithoutBraking(-10, -40, 100, 30)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -40, AfterMotion.BreakStop)
+    }
+    // Конец программы
+    pause(5000)
+    brick.exitProgram()
+}
 // Задний манипулятор в позицию сброса
 function BackManipulatorDrop () {
     motors.mediumD.run(-35)
@@ -33,16 +79,16 @@ function RgbToHsvlToColorConvert (debug: boolean) {
 }
 function CapturingVegetablesAtZone2 () {
     chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
-    pause(100)
+    pause(50)
     chassis.RampLinearDistMove(10, 60, 950, 20, 50)
-    pause(100)
+    pause(50)
     chassis.spinTurn(-90, 30)
-    pause(100)
+    pause(50)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 20, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 200)
-    pause(100)
+    pause(50)
     chassis.pivotTurn(-45, -40, WheelPivot.RightWheel)
-    pause(100)
+    pause(50)
     chassis.pivotTurn(-45, -40, WheelPivot.LeftWheel)
     motions.MoveToRefZone(SensorSelection.OnlyLeft, LogicalOperators.Greater, 90, 0, 15, AfterMotion.BreakStop)
     for (let index = 0; index < 10; index++) {
@@ -61,7 +107,7 @@ function CapturingVegetablesAtStart () {
     })
     chassis.pivotTurn(17, 40, WheelPivot.LeftWheel)
     pause(100)
-    chassis.RampLinearDistMove(10, 30, 230, 20, 60)
+    chassis.RampLinearDistMove(10, 30, 235, 20, 60)
     // Поднять фигурку
     RaiseManipulator()
     pause(100)
@@ -76,7 +122,7 @@ function CapturingVegetablesAtStart () {
         motors.mediumA.run(40, 50, MoveUnit.Degrees)
     })
     chassis.spinTurn(90, 30)
-    pause(200)
+    pause(100)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 30, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 200, params.SetSevenLineAlignmentParams(40, 0.2, 0.2, 0.3, 0.3))
     pause(50)
@@ -101,7 +147,7 @@ function CapturingVegetablesAtStart () {
         OpenManipulator()
     })
     pause(50)
-    chassis.pivotTurn(-90, -30, WheelPivot.LeftWheel)
+    chassis.pivotTurn(-87, -30, WheelPivot.LeftWheel)
     pause(100)
     chassis.LinearDistMove(30, 35, Braking.NoStop)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 35, AfterMotion.BreakStop)
@@ -118,13 +164,13 @@ function CapturingVegetablesAtStart () {
     chassis.spinTurn(90, 30)
 }
 function DumpingCompost () {
-    motions.LineFollowToDistance(250, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.4, 2))
-    motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(50, 0.4, 2))
-    pause(100)
+    motions.LineFollowToDistance(250, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.4, 1.5))
+    motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(40, 0.4, 1.5))
+    pause(50)
     chassis.spinTurn(135, 40)
-    pause(100)
+    pause(50)
     chassis.syncRampMovement(-10, -40, 50, 10, 20)
-    pause(100)
+    pause(50)
     for (let index = 0; index < 2; index++) {
         BackManipulatorDrop()
         pause(200)
@@ -134,33 +180,40 @@ function DumpingCompost () {
     RaiseManipulator()
     pause(10)
     chassis.pivotTurn(45, 40, WheelPivot.RightWheel)
-    pause(100)
+    pause(50)
     control.runInParallel(function () {
         OpenManipulator()
     })
 }
 function TransportationToMarket () {
-    motions.LineFollowToDistance(150, AfterMotion.Rolling, params.SetFourLineFollowParams(30, 0.5, 1.5))
-    pause(100)
+    motions.LineFollowToDistance(130, AfterMotion.Rolling, params.SetFourLineFollowParams(30, 0.5, 1.5))
     chassis.spinTurn(-90, 30)
-    pause(100)
+    pause(50)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Behind, 200)
+    levelings.LineAlignment(VerticalLineLocation.Behind, 600)
+    if (true) {
+        pause(10)
+        // Корректируем то, что робот не верно выравнивается
+        chassis.pivotTurn(3, 20, WheelPivot.LeftWheel)
+        pause(10)
+    }
     // Конец программы
-    pause(100)
+    pause(50)
     chassis.RampLinearDistMove(10, 50, 380, 50, 50)
     // Конец программы
-    pause(100)
-    chassis.pivotTurn(85, 30, WheelPivot.RightWheel)
+    pause(50)
+    chassis.pivotTurn(83, 30, WheelPivot.RightWheel)
     // Конец программы
-    pause(100)
-    chassis.pivotTurn(85, 30, WheelPivot.LeftWheel)
-    levelings.LineAlignment(VerticalLineLocation.Front, 200)
+    pause(50)
+    chassis.pivotTurn(83, 30, WheelPivot.LeftWheel)
     // Конец программы
-    pause(100)
+    pause(50)
+    levelings.LineAlignment(VerticalLineLocation.Front, 300)
+    // Конец программы
+    pause(50)
     chassis.spinTurn(180, 30)
-    pause(100)
-    for (let index = 0; index < 3; index++) {
+    pause(50)
+    for (let index = 0; index < 4; index++) {
         BackManipulatorDrop()
         pause(200)
         BackManipulatorStartPos()
@@ -185,15 +238,15 @@ function BackManipulatorStartPos () {
     motors.mediumD.pauseUntilStalled()
     motors.mediumD.stop()
 }
-let returnColor = 0
 let column = 0
 let color = 0
 let hsvlCS: number[] = []
 let rgbCS: number[] = []
+let returnColor = 0
 let tmp: number[] = []
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
-sensors.SetLineSensorRawRefValue(LineSensor.Left, 2404, 1792)
-sensors.SetLineSensorRawRefValue(LineSensor.Right, 2128, 1640)
+sensors.SetLineSensorRawRefValue(LineSensor.Left, 2552, 1744)
+sensors.SetLineSensorRawRefValue(LineSensor.Right, 2448, 1660)
 // Установить датчику определения фигур минимальные значения RGB
 sensors.SetColorSensorMinRgbValues(sensors.color3, [0, 1, 2])
 // Установить датчику определения фигур максимальные значения RGB
@@ -224,14 +277,13 @@ brick.showPorts()
 brick.setStatusLight(StatusLight.Off)
 // Время после старта, чтобы убрать руки
 pause(200)
-// Часть 1 - захватить все овощи после старта
-CapturingVegetablesAtStart()
-pause(100)
-DumpingCompost()
-pause(100)
-TransportationToMarket()
-pause(100)
-CapturingVegetablesAtZone2()
-// Конец программы
-pause(5000)
-brick.exitProgram()
+if (true) {
+    // Часть 1 - захватить все овощи после старта
+    CapturingVegetablesAtStart()
+    pause(100)
+    DumpingCompost()
+    pause(100)
+    TransportationToMarket()
+    pause(100)
+}
+RemoveBlackSoil()
