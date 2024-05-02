@@ -29,6 +29,7 @@ function RemoveBlackSoil () {
     for (let index = 0; index < 10; index++) {
         figureСolor = RgbToHsvlToColorConvert(true)
         pause(10)
+        sensors.SetColorSensorMinRgbValues(sensors.color3, [0, 1])
     }
     brick.clearScreen()
     brick.printValue("color", figureСolor, 1)
@@ -59,20 +60,13 @@ function RgbToHsvlToColorConvert (debug: boolean) {
     for (let i = 0; i <= 2; i++) {
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
-        // Нормализуем значения с датчика
-        // Нормализуем значения с датчика
-        // Нормализуем значения с датчика
-        // Нормализуем значения с датчика
-        // Нормализуем значения с датчика
-        // Нормализуем значения с датчика
-        rgbCS[i] = Math.map(rgbCS[i], sensors.minRgbColorSensor3[i], sensors.maxRgbColorSensor3[i], 0, 255)
+        rgbCS[i] = Math.map(rgbCS[i], sensors.GetMinRgbColorSensor(sensors.color3)[i], sensors.GetMaxRgbColorSensor(sensors.color3)[i], 0, 255)
         rgbCS[i] = Math.constrain(rgbCS[i], 0, 255)
     }
     // Получаем HSVL
     hsvlCS = sensors.RgbToHsvlConverter(rgbCS)
     // Переводим HSVL в цветовой код
-    color = sensors.HsvlToColorNum(hsvlCS, { colorBoundary: 65, whiteBoundary: 10, blackBoundary: 1, redBoundary: 25, brownBoundary: 30, yellowBoundary: 100, greenBoundary: 180, blueBoundary: 260
-    })
+    color = sensors.HsvlToColorNum(hsvlCS, sensors.HsvlToColorNumParams(65, 10, 1, 25, 30, 100, 180, 260))
     if (debug) {
         column = 20
         brick.clearScreen()
