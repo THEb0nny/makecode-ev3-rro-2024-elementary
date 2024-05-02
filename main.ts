@@ -16,48 +16,53 @@ function RemoveBlackSoil () {
     pause(50)
     motions.LineFollowToDistance(155, AfterMotion.BreakStop)
     pause(50)
-    chassis.spinTurn(90, 30)
-    pause(50)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Behind, 300)
-    pause(50)
-    chassis.LinearDistMove(70, 30, Braking.NoStop)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 30, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Front, 300)
-    pause(50)
-    chassis.LinearDistMove(50, 30, Braking.Hold)
-    for (let index = 0; index < 10; index++) {
-        figureСolor = RgbToHsvlToColorConvert(true)
-        pause(10)
-        sensors.SetColorSensorMinRgbValues(sensors.color3, [0, 1])
-    }
-    brick.clearScreen()
-    brick.printValue("color", figureСolor, 1)
-    if (figureСolor == 1) {
+    for (let index = 0; index <= 3; index++) {
+        chassis.spinTurn(90, 30)
+        pause(50)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
+        levelings.LineAlignment(VerticalLineLocation.Behind, 300)
+        pause(50)
+        chassis.LinearDistMove(70, 30, Braking.NoStop)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 30, AfterMotion.BreakStop)
+        levelings.LineAlignment(VerticalLineLocation.Front, 300)
+        pause(50)
         chassis.LinearDistMove(50, 30, Braking.Hold)
-        pause(10)
+        colors = []
+        for (let index2 = 0; index2 < 10; index2++) {
+            colors.push(RgbToHsvlToColorConvert(true))
+            pause(10)
+        }
+        figureСolor = custom.MostFrequentNumber(colors)
+        brick.clearScreen()
+        brick.printValue("color", figureСolor, 1)
+        // Если фигурка чёрная
+        if (figureСolor == 1 || figureСolor == 0) {
+            chassis.LinearDistMove(50, 30, Braking.Hold)
+        }
+        pause(100)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.NoStop)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 20, 0, -20, AfterMotion.BreakStop)
+        pause(50)
+        chassis.LinearDistMove(30, 30, Braking.Hold)
+        pause(50)
+        chassis.spinTurn(-90, 30)
+        pause(50)
+        if (index < 3) {
+            motions.LineFollowToDistance(170, AfterMotion.BreakStop)
+        }
     }
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.NoStop)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 20, 0, -20, AfterMotion.BreakStop)
-    pause(50)
-    chassis.LinearDistMove(30, 30, Braking.Hold)
-    pause(50)
-    chassis.spinTurn(-90, 30)
-    pause(50)
-    motions.LineFollowToDistance(170, AfterMotion.BreakStop)
-    // Конец программы
-    pause(5000)
-    brick.exitProgram()
 }
 // Задний манипулятор в позицию сброса
 function BackManipulatorDrop () {
-    motors.mediumD.run(-30)
+    motors.mediumD.run(-20)
     motors.mediumD.pauseUntilStalled()
     motors.mediumD.stop()
 }
 function RgbToHsvlToColorConvert (debug: boolean) {
     rgbCS = sensors.color3.rgbRaw()
     for (let i = 0; i <= 2; i++) {
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         rgbCS[i] = Math.map(rgbCS[i], sensors.GetMinRgbColorSensor(sensors.color3)[i], sensors.GetMaxRgbColorSensor(sensors.color3)[i], 0, 255)
@@ -129,7 +134,7 @@ function CapturingVegetablesAtStart () {
     chassis.spinTurn(90, 30)
     pause(100)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 30, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Front, 200, params.SetSevenLineAlignmentParams(40, 0.2, 0.2, 0.3, 0.3))
+    levelings.LineAlignment(VerticalLineLocation.Front, 200, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3))
     pause(50)
     // Поднять фигурку
     RaiseManipulator()
@@ -218,7 +223,7 @@ function TransportationToMarket () {
     pause(50)
     chassis.spinTurn(180, 30)
     pause(50)
-    for (let index = 0; index < 4; index++) {
+    for (let index = 0; index < 5; index++) {
         BackManipulatorDrop()
         pause(200)
         BackManipulatorStartPos()
@@ -248,7 +253,7 @@ let color = 0
 let hsvlCS: number[] = []
 let rgbCS: number[] = []
 let figureСolor = 0
-let tmp: number[] = []
+let colors: number[] = []
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
 sensors.SetLineSensorRawRefValue(LineSensor.Left, 2552, 1744)
 sensors.SetLineSensorRawRefValue(LineSensor.Right, 2448, 1660)
@@ -258,8 +263,8 @@ sensors.SetColorSensorMinRgbValues(sensors.color3, [0, 1, 2])
 sensors.SetColorSensorMaxRgbValues(sensors.color3, [204, 190, 243])
 // Заспамить командой, чтобы датчик цвета включился в режиме цвета
 for (let index = 0; index < 10; index++) {
-    tmp = sensors.color3.rgbRaw()
-    pause(10)
+    sensors.color3.rgbRaw()
+pause(10)
 }
 chassis.setSeparatelyChassisMotors(motors.mediumB, motors.mediumC, true, false)
 chassis.setWheelRadius(62.4, MeasurementUnit.Millimeters)
@@ -296,3 +301,6 @@ TransportationToMarket()
 pause(100)
 // Часть 4 - вытолкнуть чернозём
 RemoveBlackSoil()
+// Конец программы
+pause(5000)
+brick.exitProgram()
