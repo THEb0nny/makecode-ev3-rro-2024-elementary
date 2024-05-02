@@ -1,30 +1,71 @@
-function DumpingСompost () {
-    motions.LineFollowToDistance(250, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.5, 1.5))
-    motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(50, 0.5, 1.5))
-    pause(100)
-    chassis.spinTurn(135, 40)
-    pause(100)
-    chassis.syncRampMovement(-10, -40, 50, 10, 20)
-    pause(100)
-    for (let index = 0; index < 2; index++) {
-        BackManipulatorDrop()
-        pause(200)
-        BackManipulatorStartPos()
-        pause(200)
-    }
-    RaiseManipulator()
-    pause(10)
-    chassis.pivotTurn(45, 40, WheelPivot.RightWheel)
-    pause(100)
-    control.runInParallel(function () {
-        OpenManipulator()
-    })
-}
 // Задний манипулятор в позицию сброса
 function BackManipulatorDrop () {
     motors.mediumD.run(-35)
     motors.mediumD.pauseUntilStalled()
     motors.mediumD.stop()
+}
+function RgbToHsvlToColorConvert (debug: boolean) {
+    rgbCS = sensors.color3.rgbRaw()
+    for (let i = 0; i <= 2; i++) {
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        rgbCS[i] = Math.map(rgbCS[i], sensors.minRgbColorSensor3[i], sensors.maxRgbColorSensor3[i], 0, 255)
+        rgbCS[i] = Math.constrain(rgbCS[i], 0, 255)
+    }
+    // Получаем HSVL
+    hsvlCS = sensors.RgbToHsvlConverter(rgbCS)
+    // Переводим HSVL в цветовой код
+    color = sensors.HsvlToColorNum(hsvlCS, { colorBoundary: 65, whiteBoundary: 10, blackBoundary: 1, redBoundary: 25, brownBoundary: 30, yellowBoundary: 100, greenBoundary: 180, blueBoundary: 260
+    })
+    if (debug) {
+        column = 20
+        brick.clearScreen()
+        brick.printValue("r", rgbCS[0], 1, column)
+        brick.printValue("g", rgbCS[1], 2, column)
+        brick.printValue("b", rgbCS[2], 3, column)
+        brick.printValue("hue", hsvlCS[0], 5, column)
+        brick.printValue("sat", hsvlCS[1], 6, column)
+        brick.printValue("val", hsvlCS[2], 7, column)
+        brick.printValue("light", hsvlCS[3], 8, column)
+        brick.printValue("color", color, 10, column)
+    }
+    return color
+}
+function CapturingVegetablesAtZone2 () {
+    chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
+    pause(100)
+    chassis.RampLinearDistMove(10, 60, 950, 20, 50)
+    pause(100)
+    chassis.spinTurn(-90, 30)
+    pause(100)
+    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 20, AfterMotion.BreakStop)
+    levelings.LineAlignment(VerticalLineLocation.Front, 200)
+    pause(100)
+    chassis.pivotTurn(-45, -40, WheelPivot.RightWheel)
+    pause(100)
+    chassis.pivotTurn(-45, -40, WheelPivot.LeftWheel)
+    motions.MoveToRefZone(SensorSelection.OnlyLeft, LogicalOperators.Greater, 90, 0, 15, AfterMotion.BreakStop)
+    for (let index = 0; index < 10; index++) {
+        returnColor = RgbToHsvlToColorConvert(true)
+        pause(10)
+    }
+    RaiseManipulator()
+    pause(100)
+    OpenManipulator()
 }
 function CapturingVegetablesAtStart () {
     // Манипулятор призакрыть, чтобы клешни манипулятора не касались других фигур
@@ -76,6 +117,7 @@ function CapturingVegetablesAtStart () {
     pause(50)
     chassis.pivotTurn(-90, -30, WheelPivot.LeftWheel)
     pause(100)
+    chassis.LinearDistMove(30, 35, Braking.NoStop)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 35, AfterMotion.BreakStop)
     pause(100)
     chassis.LinearDistMove(10, 30, Braking.Hold)
@@ -88,6 +130,28 @@ function CapturingVegetablesAtStart () {
     chassis.LinearDistMove(20, 30, Braking.Hold)
     pause(100)
     chassis.spinTurn(90, 30)
+}
+function DumpingCompost () {
+    motions.LineFollowToDistance(250, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.4, 2))
+    motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(50, 0.4, 2))
+    pause(100)
+    chassis.spinTurn(135, 40)
+    pause(100)
+    chassis.syncRampMovement(-10, -40, 50, 10, 20)
+    pause(100)
+    for (let index = 0; index < 2; index++) {
+        BackManipulatorDrop()
+        pause(200)
+        BackManipulatorStartPos()
+        pause(200)
+    }
+    RaiseManipulator()
+    pause(10)
+    chassis.pivotTurn(45, 40, WheelPivot.RightWheel)
+    pause(100)
+    control.runInParallel(function () {
+        OpenManipulator()
+    })
 }
 function TransportationToMarket () {
     motions.LineFollowToDistance(150, AfterMotion.Rolling, params.SetFourLineFollowParams(30, 0.5, 1.5))
@@ -110,25 +174,12 @@ function TransportationToMarket () {
     pause(100)
     chassis.spinTurn(180, 30)
     pause(100)
-    for (let index = 0; index < 5; index++) {
+    for (let index = 0; index < 3; index++) {
         BackManipulatorDrop()
         pause(200)
         BackManipulatorStartPos()
         pause(200)
     }
-    chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
-    pause(100)
-    chassis.RampLinearDistMove(10, 60, 960, 20, 50)
-    pause(100)
-    chassis.spinTurn(-90, 30)
-    pause(100)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 20, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Front, 200)
-    pause(100)
-    chassis.pivotTurn(-45, -40, WheelPivot.RightWheel)
-    pause(100)
-    chassis.pivotTurn(-45, -40, WheelPivot.LeftWheel)
-    motions.MoveToRefZone(SensorSelection.OnlyLeft, LogicalOperators.Greater, 90, 0, 15, AfterMotion.BreakStop)
 }
 // Раскрыть манипулятор
 function OpenManipulator () {
@@ -148,9 +199,23 @@ function BackManipulatorStartPos () {
     motors.mediumD.pauseUntilStalled()
     motors.mediumD.stop()
 }
+let returnColor = 0
+let column = 0
+let color = 0
+let hsvlCS: number[] = []
+let rgbCS: number[] = []
+let tmp: number[] = []
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
-sensors.SetLineSensorRawRefValue(LineSensor.Left, 2496, 1740)
-sensors.SetLineSensorRawRefValue(LineSensor.Right, 2320, 1584)
+sensors.SetLineSensorRawRefValue(LineSensor.Left, 2404, 1792)
+sensors.SetLineSensorRawRefValue(LineSensor.Right, 2128, 1640)
+// Установить датчику определения фигур минимальные значения RGB
+sensors.SetColorSensorMinRgbValues(sensors.color3, [0, 1, 2])
+// Установить датчику определения фигур максимальные значения RGB
+sensors.SetColorSensorMaxRgbValues(sensors.color3, [204, 190, 243])
+for (let index = 0; index < 4; index++) {
+    tmp = sensors.color3.rgbRaw()
+    pause(10)
+}
 chassis.setSeparatelyChassisMotors(motors.mediumB, motors.mediumC, true, false)
 chassis.setWheelRadius(62.4, MeasurementUnit.Millimeters)
 chassis.setBaseLength(180, MeasurementUnit.Millimeters)
@@ -176,9 +241,11 @@ pause(200)
 // Часть 1 - захватить все овощи после старта
 CapturingVegetablesAtStart()
 pause(100)
-DumpingСompost()
+DumpingCompost()
 pause(100)
 TransportationToMarket()
+pause(100)
+CapturingVegetablesAtZone2()
 // Конец программы
 pause(5000)
 brick.exitProgram()
