@@ -4,7 +4,7 @@ function CheckingAndPushingOutBlackSoil () {
         chassis.spinTurn(90, 30)
         pause(50)
         motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
-        levelings.LineAlignment(VerticalLineLocation.Behind, 300, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3))
+        levelings.LineAlignment(VerticalLineLocation.Behind, 400, params.SetSevenLineAlignmentParams(40, 0.4, 0.3, 0.3, 0.4))
         pause(50)
         chassis.LinearDistMove(60, 30, Braking.NoStop)
         motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 30, AfterMotion.BreakStop)
@@ -26,7 +26,7 @@ function CheckingAndPushingOutBlackSoil () {
         pause(100)
         motions.MoveToRefZone(SensorSelection.LeftAndRight, LogicalOperators.Greater, 90, 0, -20, AfterMotion.NoBreakStop)
         pause(100)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 20, 0, -20, AfterMotion.BreakStop)
+        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 30, 0, -20, AfterMotion.BreakStop)
         pause(50)
         chassis.LinearDistMove(30, 30, Braking.Hold)
         pause(50)
@@ -39,7 +39,7 @@ function CheckingAndPushingOutBlackSoil () {
 }
 // Часть с выталкиванием чернозёма с двух сторон
 function RemoveBlackSoil () {
-    if (false) {
+    if (true) {
         chassis.pivotTurn(90, 30, WheelPivot.RightWheel)
         pause(50)
         chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
@@ -70,8 +70,7 @@ function BackManipulatorDrop () {
 }
 // Едем домой
 function GoHome () {
-    motions.SetLineFollowRefTreshold(70)
-    motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(25, 0.3, 1.5))
+    motions.LineFollowToDistance(300, AfterMotion.Rolling)
     // Если нужно повернуть в зону финиша, то ИСТИНУ ставить
     if (false) {
         pause(50)
@@ -98,7 +97,7 @@ function RgbToHsvlToColorConvert (debug: boolean) {
     // Получаем HSVL
     hsvlCS = sensors.RgbToHsvlConverter(rgbCS)
     // Переводим HSVL в цветовой код
-    color = sensors.HsvlToColorNum(hsvlCS, sensors.HsvlToColorNumParams(65, 10, 1, 25, 30, 100, 180, 260))
+    color = sensors.HsvlToColorNum(hsvlCS, sensors.HsvlToColorNumParams(50, 10, 1, 25, 30, 100, 180, 260))
     if (debug) {
         column = 20
         brick.clearScreen()
@@ -190,7 +189,7 @@ function CapturingVegetablesAtStart () {
     chassis.LinearDistMove(30, 35, Braking.NoStop)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 35, AfterMotion.BreakStop)
     pause(100)
-    chassis.LinearDistMove(10, 30, Braking.Hold)
+    chassis.LinearDistMove(20, 30, Braking.Hold)
     pause(50)
     motors.mediumA.run(40, 280, MoveUnit.Degrees)
     pause(100)
@@ -230,11 +229,12 @@ function TransportationToMarket () {
     chassis.spinTurn(-90, 30)
     pause(50)
     motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Behind, 600)
+    levelings.LineAlignment(VerticalLineLocation.Behind, 600, params.SetSevenLineAlignmentParams(50, 0.4, 0.3, 0.4, 0.3))
+    // Подворот, если выравнивание плохое
     if (true) {
         pause(10)
         // Корректируем то, что робот не верно выравнивается
-        chassis.pivotTurn(3, 20, WheelPivot.LeftWheel)
+        chassis.pivotTurn(5, 20, WheelPivot.LeftWheel)
         pause(10)
     }
     // Конец программы
@@ -242,16 +242,16 @@ function TransportationToMarket () {
     chassis.RampLinearDistMove(10, 50, 380, 50, 50)
     // Конец программы
     pause(50)
-    chassis.pivotTurn(85, 30, WheelPivot.RightWheel)
+    chassis.pivotTurn(85, 40, WheelPivot.RightWheel)
     // Конец программы
     pause(50)
-    chassis.pivotTurn(85, 30, WheelPivot.LeftWheel)
+    chassis.pivotTurn(85, 40, WheelPivot.LeftWheel)
     // Конец программы
     pause(50)
     levelings.LineAlignment(VerticalLineLocation.Front, 300)
     // Конец программы
     pause(50)
-    chassis.spinTurn(180, 30)
+    chassis.spinTurn(190, 30)
     pause(50)
     for (let index = 0; index < 5; index++) {
         BackManipulatorDrop()
@@ -259,6 +259,7 @@ function TransportationToMarket () {
         BackManipulatorStartPos()
         pause(200)
     }
+    chassis.spinTurn(-10, 30)
 }
 // Раскрыть манипулятор
 function OpenManipulator () {
@@ -321,17 +322,17 @@ brick.showPorts()
 brick.setStatusLight(StatusLight.Off)
 // Время после старта, чтобы убрать руки
 pause(200)
-if (false) {
+if (true) {
     // Часть 1 - захватить все овощи после старта
     CapturingVegetablesAtStart()
     pause(50)
 }
-if (false) {
+if (true) {
     // Часть 2 - сброс жёлтых овощей в компост
     DumpingCompost()
     pause(50)
 }
-if (false) {
+if (true) {
     // Часть 3 - сброс красных овощей в компост
     TransportationToMarket()
     pause(50)
