@@ -3,26 +3,12 @@ function CheckingAndPushingOutBlackSoil () {
     for (let index = 0; index <= 2; index++) {
         chassis.spinTurn(90, 30)
         pause(50)
-        motions.MoveToRefZone(
-        LineSensorSelection.LeftOrRight,
-        LogicalOperators.Greater,
-        90,
-        0,
-        -20,
-        AfterMotion.BreakStop
-        )
+        motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
         pause(50)
         levelings.LineAlignment(VerticalLineLocation.Behind, 500, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3, 0))
         pause(50)
         chassis.LinearDistMove(60, 30, Braking.NoStop)
-        motions.MoveToRefZone(
-        LineSensorSelection.LeftOrRight,
-        LogicalOperators.Greater,
-        90,
-        0,
-        30,
-        AfterMotion.BreakStop
-        )
+        motions.MoveToRefZone(0, 30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
         levelings.LineAlignment(VerticalLineLocation.Front, 300)
         pause(50)
         chassis.LinearDistMove(40, 30, Braking.Hold)
@@ -39,23 +25,9 @@ function CheckingAndPushingOutBlackSoil () {
             chassis.LinearDistMove(95, 30, Braking.Hold)
         }
         pause(100)
-        motions.MoveToRefZone(
-        LineSensorSelection.LeftAndRight,
-        LogicalOperators.Greater,
-        90,
-        0,
-        -20,
-        AfterMotion.NoBreakStop
-        )
+        motions.MoveToRefZone(0, -20, LineSensorSelection.LeftAndRight, LogicalOperators.Greater, 90, AfterMotion.NoBreakStop)
         pause(100)
-        motions.MoveToRefZone(
-        LineSensorSelection.LeftOrRight,
-        LogicalOperators.Less,
-        30,
-        0,
-        -20,
-        AfterMotion.BreakStop
-        )
+        motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.BreakStop)
         pause(50)
         chassis.LinearDistMove(30, 30, Braking.Hold)
         pause(50)
@@ -72,14 +44,7 @@ function RemoveBlackSoil () {
         chassis.pivotTurn(90, 30, WheelPivot.RightWheel)
         pause(50)
         chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
-        motions.MoveToRefZone(
-        LineSensorSelection.LeftOrRight,
-        LogicalOperators.Greater,
-        90,
-        0,
-        40,
-        AfterMotion.BreakStop
-        )
+        motions.MoveToRefZone(0, 40, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
         levelings.LineAlignment(VerticalLineLocation.Front, 300)
         chassis.LinearDistMove(40, 30, Braking.Hold)
         pause(50)
@@ -185,6 +150,198 @@ function RgbToHsvlToColorConvert (debug: boolean) {
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
         rgbCS[i] = Math.map(rgbCS[i], sensors.GetMinRgbColorSensor(sensors.color3)[i], sensors.GetMaxRgbColorSensor(sensors.color3)[i], 0, 255)
         rgbCS[i] = Math.constrain(rgbCS[i], 0, 255)
     }
@@ -214,27 +371,13 @@ function CapturingVegetablesAtZone2 () {
     pause(50)
     chassis.spinTurn(-90, 30)
     pause(50)
-    motions.MoveToRefZone(
-    LineSensorSelection.LeftOrRight,
-    LogicalOperators.Greater,
-    90,
-    0,
-    20,
-    AfterMotion.BreakStop
-    )
+    motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 200)
     pause(50)
     chassis.pivotTurn(-45, -40, WheelPivot.RightWheel)
     pause(50)
     chassis.pivotTurn(-45, -40, WheelPivot.LeftWheel)
-    motions.MoveToRefZone(
-    LineSensorSelection.OnlyLeft,
-    LogicalOperators.Greater,
-    90,
-    0,
-    15,
-    AfterMotion.BreakStop
-    )
+    motions.MoveToRefZone(0, 15, LineSensorSelection.OnlyLeft, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     for (let index = 0; index < 10; index++) {
         figureColor = RgbToHsvlToColorConvert(true)
         pause(10)
@@ -268,14 +411,7 @@ function CapturingVegetablesAtStart () {
     })
     chassis.spinTurn(90, 30)
     pause(100)
-    motions.MoveToRefZone(
-    LineSensorSelection.LeftOrRight,
-    LogicalOperators.Greater,
-    90,
-    0,
-    20,
-    AfterMotion.BreakStop
-    )
+    motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 200, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3, 0))
     pause(50)
     // Поднять фигурку
@@ -288,14 +424,7 @@ function CapturingVegetablesAtStart () {
     pause(50)
     chassis.pivotTurn(-60, -30, WheelPivot.RightWheel)
     pause(100)
-    motions.MoveToRefZone(
-    LineSensorSelection.LeftOrRight,
-    LogicalOperators.Greater,
-    90,
-    0,
-    35,
-    AfterMotion.BreakStop
-    )
+    motions.MoveToRefZone(0, 35, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 200)
     pause(50)
     // Поднять фигурку
@@ -309,28 +438,14 @@ function CapturingVegetablesAtStart () {
     chassis.pivotTurn(-87, -30, WheelPivot.LeftWheel)
     pause(100)
     chassis.LinearDistMove(30, 35, Braking.NoStop)
-    motions.MoveToRefZone(
-    LineSensorSelection.LeftOrRight,
-    LogicalOperators.Greater,
-    90,
-    0,
-    35,
-    AfterMotion.BreakStop
-    )
+    motions.MoveToRefZone(0, 35, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     pause(100)
     chassis.LinearDistMove(10, 20, Braking.Hold)
     pause(50)
     motors.mediumA.run(40, 300, MoveUnit.Degrees)
     pause(100)
     chassis.LinearDistMove(100, -30, Braking.Hold)
-    motions.MoveToRefZone(
-    LineSensorSelection.LeftOrRight,
-    LogicalOperators.Greater,
-    90,
-    0,
-    -30,
-    AfterMotion.BreakStop
-    )
+    motions.MoveToRefZone(0, -30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     pause(50)
     chassis.LinearDistMove(20, 30, Braking.Hold)
     pause(100)
@@ -364,14 +479,7 @@ function TransportationToMarket () {
     motions.LineFollowToDistance(150, AfterMotion.Rolling, params.SetFourLineFollowParams(30, 0.5, 1.5))
     chassis.spinTurn(-90, 30)
     pause(50)
-    motions.MoveToRefZone(
-    LineSensorSelection.LeftOrRight,
-    LogicalOperators.Greater,
-    90,
-    0,
-    -30,
-    AfterMotion.BreakStop
-    )
+    motions.MoveToRefZone(0, -30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Behind, 600, params.SetSevenLineAlignmentParams(50, 0.4, 0.4, 0.3, 0.3, 0))
     // Подворот, если выравнивание плохое
     if (true) {
@@ -394,14 +502,7 @@ function TransportationToMarket () {
     chassis.spinTurn(-90, 30)
     // Конец программы
     pause(50)
-    motions.MoveToRefZone(
-    LineSensorSelection.LeftOrRight,
-    LogicalOperators.Greater,
-    90,
-    0,
-    20,
-    AfterMotion.BreakStop
-    )
+    motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     // Конец программы
     pause(50)
     levelings.LineAlignment(VerticalLineLocation.Front, 300)
