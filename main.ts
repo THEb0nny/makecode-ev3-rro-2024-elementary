@@ -3,12 +3,26 @@ function CheckingAndPushingOutBlackSoil () {
     for (let index = 0; index <= 2; index++) {
         chassis.spinTurn(90, 30)
         pause(50)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -20, AfterMotion.BreakStop)
+        motions.MoveToRefZone(
+        LineSensorSelection.LeftOrRight,
+        LogicalOperators.Greater,
+        90,
+        0,
+        -20,
+        AfterMotion.BreakStop
+        )
         pause(50)
-        levelings.LineAlignment(VerticalLineLocation.Behind, 500, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3))
+        levelings.LineAlignment(VerticalLineLocation.Behind, 500, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3, 0))
         pause(50)
         chassis.LinearDistMove(60, 30, Braking.NoStop)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 30, AfterMotion.BreakStop)
+        motions.MoveToRefZone(
+        LineSensorSelection.LeftOrRight,
+        LogicalOperators.Greater,
+        90,
+        0,
+        30,
+        AfterMotion.BreakStop
+        )
         levelings.LineAlignment(VerticalLineLocation.Front, 300)
         pause(50)
         chassis.LinearDistMove(40, 30, Braking.Hold)
@@ -17,17 +31,31 @@ function CheckingAndPushingOutBlackSoil () {
             colors.push(RgbToHsvlToColorConvert(true))
             pause(15)
         }
-        figureСolor = custom.MostFrequentNumber(colors)
+        figureColor = custom.MostFrequentNumber(colors)
         brick.clearScreen()
-        brick.printValue("color", figureСolor, 1)
+        brick.printValue("color", figureColor, 1)
         // Если фигурка чёрная
-        if (figureСolor == 1 || figureСolor == 0) {
+        if (figureColor == 1 || figureColor == 0) {
             chassis.LinearDistMove(95, 30, Braking.Hold)
         }
         pause(100)
-        motions.MoveToRefZone(SensorSelection.LeftAndRight, LogicalOperators.Greater, 90, 0, -20, AfterMotion.NoBreakStop)
+        motions.MoveToRefZone(
+        LineSensorSelection.LeftAndRight,
+        LogicalOperators.Greater,
+        90,
+        0,
+        -20,
+        AfterMotion.NoBreakStop
+        )
         pause(100)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Less, 30, 0, -20, AfterMotion.BreakStop)
+        motions.MoveToRefZone(
+        LineSensorSelection.LeftOrRight,
+        LogicalOperators.Less,
+        30,
+        0,
+        -20,
+        AfterMotion.BreakStop
+        )
         pause(50)
         chassis.LinearDistMove(30, 30, Braking.Hold)
         pause(50)
@@ -44,7 +72,14 @@ function RemoveBlackSoil () {
         chassis.pivotTurn(90, 30, WheelPivot.RightWheel)
         pause(50)
         chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
-        motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 40, AfterMotion.BreakStop)
+        motions.MoveToRefZone(
+        LineSensorSelection.LeftOrRight,
+        LogicalOperators.Greater,
+        90,
+        0,
+        40,
+        AfterMotion.BreakStop
+        )
         levelings.LineAlignment(VerticalLineLocation.Front, 300)
         chassis.LinearDistMove(40, 30, Braking.Hold)
         pause(50)
@@ -102,6 +137,54 @@ function RgbToHsvlToColorConvert (debug: boolean) {
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
         // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
+        // Нормализуем значения с датчика
         rgbCS[i] = Math.map(rgbCS[i], sensors.GetMinRgbColorSensor(sensors.color3)[i], sensors.GetMaxRgbColorSensor(sensors.color3)[i], 0, 255)
         rgbCS[i] = Math.constrain(rgbCS[i], 0, 255)
     }
@@ -131,15 +214,29 @@ function CapturingVegetablesAtZone2 () {
     pause(50)
     chassis.spinTurn(-90, 30)
     pause(50)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 20, AfterMotion.BreakStop)
+    motions.MoveToRefZone(
+    LineSensorSelection.LeftOrRight,
+    LogicalOperators.Greater,
+    90,
+    0,
+    20,
+    AfterMotion.BreakStop
+    )
     levelings.LineAlignment(VerticalLineLocation.Front, 200)
     pause(50)
     chassis.pivotTurn(-45, -40, WheelPivot.RightWheel)
     pause(50)
     chassis.pivotTurn(-45, -40, WheelPivot.LeftWheel)
-    motions.MoveToRefZone(SensorSelection.OnlyLeft, LogicalOperators.Greater, 90, 0, 15, AfterMotion.BreakStop)
+    motions.MoveToRefZone(
+    LineSensorSelection.OnlyLeft,
+    LogicalOperators.Greater,
+    90,
+    0,
+    15,
+    AfterMotion.BreakStop
+    )
     for (let index = 0; index < 10; index++) {
-        figureСolor = RgbToHsvlToColorConvert(true)
+        figureColor = RgbToHsvlToColorConvert(true)
         pause(10)
     }
     RaiseManipulator()
@@ -171,8 +268,15 @@ function CapturingVegetablesAtStart () {
     })
     chassis.spinTurn(90, 30)
     pause(100)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 20, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Front, 200, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3))
+    motions.MoveToRefZone(
+    LineSensorSelection.LeftOrRight,
+    LogicalOperators.Greater,
+    90,
+    0,
+    20,
+    AfterMotion.BreakStop
+    )
+    levelings.LineAlignment(VerticalLineLocation.Front, 200, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3, 0))
     pause(50)
     // Поднять фигурку
     RaiseManipulator()
@@ -184,7 +288,14 @@ function CapturingVegetablesAtStart () {
     pause(50)
     chassis.pivotTurn(-60, -30, WheelPivot.RightWheel)
     pause(100)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 35, AfterMotion.BreakStop)
+    motions.MoveToRefZone(
+    LineSensorSelection.LeftOrRight,
+    LogicalOperators.Greater,
+    90,
+    0,
+    35,
+    AfterMotion.BreakStop
+    )
     levelings.LineAlignment(VerticalLineLocation.Front, 200)
     pause(50)
     // Поднять фигурку
@@ -198,14 +309,28 @@ function CapturingVegetablesAtStart () {
     chassis.pivotTurn(-87, -30, WheelPivot.LeftWheel)
     pause(100)
     chassis.LinearDistMove(30, 35, Braking.NoStop)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 35, AfterMotion.BreakStop)
+    motions.MoveToRefZone(
+    LineSensorSelection.LeftOrRight,
+    LogicalOperators.Greater,
+    90,
+    0,
+    35,
+    AfterMotion.BreakStop
+    )
     pause(100)
     chassis.LinearDistMove(10, 20, Braking.Hold)
     pause(50)
     motors.mediumA.run(40, 300, MoveUnit.Degrees)
     pause(100)
     chassis.LinearDistMove(100, -30, Braking.Hold)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
+    motions.MoveToRefZone(
+    LineSensorSelection.LeftOrRight,
+    LogicalOperators.Greater,
+    90,
+    0,
+    -30,
+    AfterMotion.BreakStop
+    )
     pause(50)
     chassis.LinearDistMove(20, 30, Braking.Hold)
     pause(100)
@@ -239,8 +364,15 @@ function TransportationToMarket () {
     motions.LineFollowToDistance(150, AfterMotion.Rolling, params.SetFourLineFollowParams(30, 0.5, 1.5))
     chassis.spinTurn(-90, 30)
     pause(50)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, -30, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Behind, 600, params.SetSevenLineAlignmentParams(50, 0.4, 0.4, 0.3, 0.3))
+    motions.MoveToRefZone(
+    LineSensorSelection.LeftOrRight,
+    LogicalOperators.Greater,
+    90,
+    0,
+    -30,
+    AfterMotion.BreakStop
+    )
+    levelings.LineAlignment(VerticalLineLocation.Behind, 600, params.SetSevenLineAlignmentParams(50, 0.4, 0.4, 0.3, 0.3, 0))
     // Подворот, если выравнивание плохое
     if (true) {
         pause(10)
@@ -262,7 +394,14 @@ function TransportationToMarket () {
     chassis.spinTurn(-90, 30)
     // Конец программы
     pause(50)
-    motions.MoveToRefZone(SensorSelection.LeftOrRight, LogicalOperators.Greater, 90, 0, 20, AfterMotion.BreakStop)
+    motions.MoveToRefZone(
+    LineSensorSelection.LeftOrRight,
+    LogicalOperators.Greater,
+    90,
+    0,
+    20,
+    AfterMotion.BreakStop
+    )
     // Конец программы
     pause(50)
     levelings.LineAlignment(VerticalLineLocation.Front, 300)
@@ -299,7 +438,7 @@ let column = 0
 let color = 0
 let hsvlCS: number[] = []
 let rgbCS: number[] = []
-let figureСolor = 0
+let figureColor = 0
 let colors: number[] = []
 music.setVolume(10)
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
