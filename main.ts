@@ -81,6 +81,7 @@ function GoHome () {
     }
     // Конец программы
     pause(1000)
+    music.stopAllSounds()
     music.playSoundEffectUntilDone(sounds.informationStop)
 }
 function RgbToHsvlToColorConvert (debug: boolean) {
