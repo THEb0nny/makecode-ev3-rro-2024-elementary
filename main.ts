@@ -5,7 +5,7 @@ function CheckingAndPushingOutBlackSoil () {
         pause(50)
         motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
         pause(50)
-        levelings.LineAlignment(VerticalLineLocation.Behind, 500, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3, 0, 0))
+        levelings.LineAlignment(VerticalLineLocation.Behind, 500, params.SevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3, 0, 0))
         pause(50)
         chassis.LinearDistMove(60, 30, Braking.NoStop)
         motions.MoveToRefZone(0, 30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
@@ -158,7 +158,7 @@ function CapturingVegetablesAtStart () {
     chassis.spinTurn(90, 30)
     pause(100)
     motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Front, 200, params.SetSevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3, 0, 0))
+    levelings.LineAlignment(VerticalLineLocation.Front, 200, params.SevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3, 0, 0))
     pause(50)
     // Поднять фигурку
     RaiseManipulator()
@@ -226,7 +226,7 @@ function TransportationToMarket () {
     chassis.spinTurn(-90, 30)
     pause(50)
     motions.MoveToRefZone(0, -30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 50, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Behind, 600, params.SetSevenLineAlignmentParams(50, 0.4, 0.4, 0.3, 0.3, 0, 0))
+    levelings.LineAlignment(VerticalLineLocation.Behind, 600, params.SevenLineAlignmentParams(50, 0.4, 0.4, 0.3, 0.3, 0, 0))
     // Подворот, если выравнивание плохое
     if (true) {
         pause(10)
@@ -295,6 +295,7 @@ sensors.SetLineSensorRawRefValue(LineSensor.Right, 2376, 1604)
 sensors.SetColorSensorMinRgbValues(sensors.color3, 0, 1, 2)
 // Установить датчику определения фигур максимальные значения RGB
 sensors.SetColorSensorMaxRgbValues(sensors.color3, 204, 190, 243)
+params.SetLineFollowParams(50, 0, 0, 0, 0)
 // Заспамить командой, чтобы датчик цвета включился в режиме цвета
 for (let index = 0; index < 10; index++) {
     sensors.color3.rgbRaw()
