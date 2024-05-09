@@ -295,7 +295,6 @@ sensors.SetLineSensorRawRefValue(LineSensor.Right, 2376, 1604)
 sensors.SetColorSensorMinRgbValues(sensors.color3, 0, 1, 2)
 // Установить датчику определения фигур максимальные значения RGB
 sensors.SetColorSensorMaxRgbValues(sensors.color3, 204, 190, 243)
-params.SetLineFollowParams(50, 0, 0, 0, 0)
 // Заспамить командой, чтобы датчик цвета включился в режиме цвета
 for (let index = 0; index < 10; index++) {
     sensors.color3.rgbRaw()
