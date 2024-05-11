@@ -287,7 +287,7 @@ let hsvlCS: number[] = []
 let rgbCS: number[] = []
 let figureColor = 0
 let colors: number[] = []
-music.setVolume(10)
+music.setVolume(20)
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
 sensors.SetLineSensorRawRefValue(LineSensor.Left, 2496, 1696)
 sensors.SetLineSensorRawRefValue(LineSensor.Right, 2376, 1604)
@@ -298,6 +298,8 @@ sensors.SetColorSensorMaxRgbValues(sensors.color3, 204, 190, 243)
 // Заспамить командой, чтобы датчик цвета включился в режиме цвета
 for (let index = 0; index < 10; index++) {
     sensors.color3.rgbRaw()
+sensors.nxtLight1.light(NXTLightIntensityMode.ReflectedRaw);
+sensors.nxtLight4.light(NXTLightIntensityMode.ReflectedRaw);
 pause(10)
 }
 chassis.setSeparatelyChassisMotors(motors.mediumB, motors.mediumC, true, false)
@@ -307,15 +309,18 @@ chassis.setSyncRegulatorGains(0.02, 0, 0.5)
 motions.SetDistRollingAfterInsetsection(50)
 motions.SetDistRollingAfterIntersectionMoveOut(20)
 motions.SetLineFollowLoopDt(5)
+levelings.SetDistanceBetweenLineSensors(46)
 motors.mediumA.setInverted(false)
 motors.mediumA.setBrake(true)
 motors.mediumD.setBrake(true)
-control.runInParallel(function () {
-    // Раскрыть манипулятор перед стартом
-    OpenManipulator()
-    // Задний манипулятор на стартовую позицию
-    BackManipulatorStartPos()
-})
+if (true) {
+    control.runInParallel(function () {
+        // Раскрыть манипулятор перед стартом
+        OpenManipulator()
+        // Задний манипулятор на стартовую позицию
+        BackManipulatorStartPos()
+    })
+}
 brick.printString("PRESS TO RUN", 7, 10)
 brick.setStatusLight(StatusLight.GreenPulse)
 // По кнопке вправо старт программы
@@ -339,10 +344,14 @@ if (true) {
     TransportationToMarket()
     pause(50)
 }
-// Часть 4 - вытолкнуть чернозём
-RemoveBlackSoil()
-pause(50)
-GoHome()
+if (true) {
+    // Часть 4 - вытолкнуть чернозём
+    RemoveBlackSoil()
+    pause(50)
+}
+if (true) {
+    GoHome()
+}
 // Конец программы
 pause(5000)
 brick.exitProgram()
