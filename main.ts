@@ -307,7 +307,7 @@ chassis.setSyncRegulatorGains(0.02, 0, 0.5)
 motions.SetDistRollingAfterInsetsection(50)
 motions.SetDistRollingAfterIntersectionMoveOut(20)
 motions.SetLineFollowLoopDt(5)
-motors.mediumA.setInverted(true)
+motors.mediumA.setInverted(false)
 motors.mediumA.setBrake(true)
 motors.mediumD.setBrake(true)
 control.runInParallel(function () {
