@@ -51,7 +51,7 @@ function RemoveBlackSoil () {
         chassis.spinTurn(90, 30)
         pause(50)
     }
-    motions.LineFollowToIntersection(AfterMotion.BreakStop, params.SetFourLineFollowParams(40, 0.4, 1.5))
+    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.SetFourLineFollowParams(40, 0.4, 1.5))
     pause(100)
     chassis.spinTurn(180, 30)
     pause(50)
@@ -200,7 +200,7 @@ function CapturingVegetablesAtStart () {
 // Часть сброса компоста
 function DumpingCompost () {
     motions.LineFollowToDistance(250, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.4, 1.5))
-    motions.LineFollowToIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(40, 0.4, 1.5))
+    motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(40, 0.4, 1.5))
     pause(50)
     chassis.spinTurn(135, 40)
     pause(50)
