@@ -289,8 +289,8 @@ let figureColor = 0
 let colors: number[] = []
 music.setVolume(20)
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
-sensors.SetLineSensorRawRefValue(LineSensor.Left, 2496, 1696)
-sensors.SetLineSensorRawRefValue(LineSensor.Right, 2376, 1604)
+sensors.SetLineSensorRawRefValue(LineSensor.Left, 2576, 1924)
+sensors.SetLineSensorRawRefValue(LineSensor.Right, 2452, 1860)
 // Установить датчику определения фигур минимальные значения RGB
 sensors.SetColorSensorMinRgbValues(sensors.color3, 0, 1, 2)
 // Установить датчику определения фигур максимальные значения RGB
