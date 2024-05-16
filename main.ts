@@ -289,8 +289,8 @@ let figureColor = 0
 let colors: number[] = []
 music.setVolume(20)
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
-sensors.SetLineSensorRawRefValue(LineSensor.Left, 2576, 1924)
-sensors.SetLineSensorRawRefValue(LineSensor.Right, 2452, 1860)
+sensors.SetLineSensorRawRefValue(LineSensor.Left, 2432, 1704)
+sensors.SetLineSensorRawRefValue(LineSensor.Right, 2452, 1580)
 // Установить датчику определения фигур минимальные значения RGB
 sensors.SetColorSensorMinRgbValues(sensors.color3, 0, 1, 2)
 // Установить датчику определения фигур максимальные значения RGB
@@ -304,13 +304,13 @@ pause(10)
 }
 chassis.setSeparatelyChassisMotors(motors.mediumB, motors.mediumC, true, false)
 chassis.setWheelRadius(62.4, MeasurementUnit.Millimeters)
-chassis.setBaseLength(180, MeasurementUnit.Millimeters)
+chassis.setBaseLength(190, MeasurementUnit.Millimeters)
 chassis.setSyncRegulatorGains(0.02, 0, 0.5)
 motions.SetDistRollingAfterInsetsection(50)
 motions.SetDistRollingAfterIntersectionMoveOut(20)
 levelings.SetDistanceBetweenLineSensors(46)
-motions.SetLineFollowLoopDt(5)
-levelings.SetLineAlignmentOrPositioningLoopDt(5)
+motions.SetLineFollowLoopDt(2)
+levelings.SetLineAlignmentOrPositioningLoopDt(2)
 motors.mediumA.setInverted(false)
 motors.mediumA.setBrake(true)
 motors.mediumD.setBrake(true)
@@ -324,8 +324,14 @@ if (true) {
 }
 brick.printString("PRESS TO RUN", 7, 10)
 brick.setStatusLight(StatusLight.GreenPulse)
-// По кнопке вправо старт программы
-brick.buttonRight.pauseUntil(ButtonEvent.Bumped)
+while (true) {
+    if (brick.buttonLeft.wasPressed()) {
+        custom.FunctionsTune()
+        break;
+    } else if (brick.buttonRight.wasPressed()) {
+        break;
+    }
+}
 brick.showPorts()
 brick.setStatusLight(StatusLight.Off)
 // Время после старта, чтобы убрать руки
