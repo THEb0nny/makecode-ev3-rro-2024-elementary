@@ -304,7 +304,7 @@ pause(10)
 }
 chassis.setSeparatelyChassisMotors(motors.mediumB, motors.mediumC, true, false)
 chassis.setWheelRadius(62.4, MeasurementUnit.Millimeters)
-chassis.setBaseLength(190, MeasurementUnit.Millimeters)
+chassis.setBaseLength(180, MeasurementUnit.Millimeters)
 chassis.setSyncRegulatorGains(0.02, 0, 0.5)
 motions.SetDistRollingAfterInsetsection(50)
 motions.SetDistRollingAfterIntersectionMoveOut(20)
