@@ -308,13 +308,13 @@ chassis.setBaseLength(180, MeasurementUnit.Millimeters)
 chassis.setSyncRegulatorGains(0.02, 0, 0.5)
 motions.SetDistRollingAfterInsetsection(50)
 motions.SetDistRollingAfterIntersectionMoveOut(20)
-levelings.SetDistanceBetweenLineSensors(46)
+levelings.SetDistanceBetweenLineSensors(32)
 motions.SetLineFollowLoopDt(2)
 levelings.SetLineAlignmentOrPositioningLoopDt(2)
 motors.mediumA.setInverted(false)
 motors.mediumA.setBrake(true)
 motors.mediumD.setBrake(true)
-if (true) {
+if (false) {
     control.runInParallel(function () {
         // Раскрыть манипулятор перед стартом
         OpenManipulator()
