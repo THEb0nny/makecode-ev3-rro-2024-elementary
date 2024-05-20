@@ -38,6 +38,12 @@ function CheckingAndPushingOutBlackSoil () {
         }
     }
 }
+function RightManipulator (_break: boolean) {
+    motors.mediumD.run(-20)
+    motors.mediumD.pauseUntilStalled()
+    motors.mediumD.setBrake(_break)
+    motors.mediumD.stop()
+}
 // Часть с выталкиванием чернозёма с двух сторон
 function RemoveBlackSoil () {
     if (true) {
@@ -64,12 +70,6 @@ function RemoveBlackSoil () {
     motions.LineFollowToDistance(470, AfterMotion.BreakStop)
     pause(100)
     CheckingAndPushingOutBlackSoil()
-}
-// Задний манипулятор в позицию сброса
-function BackManipulatorDrop () {
-    motors.mediumD.run(-20)
-    motors.mediumD.pauseUntilStalled()
-    motors.mediumD.stop()
 }
 // Едем домой
 function GoHome () {
@@ -109,6 +109,12 @@ function RgbToHsvlToColorConvert (debug: boolean) {
     }
     return color
 }
+function LeftManipulator (_break: boolean) {
+    motors.mediumA.run(-20)
+    motors.mediumA.pauseUntilStalled()
+    motors.mediumA.setBrake(_break)
+    motors.mediumA.stop()
+}
 // Часть перемещения ко второй зоне с овощами
 function CapturingVegetablesAtZone2 () {
     chassis.pivotTurn(90, 30, WheelPivot.LeftWheel)
@@ -128,9 +134,7 @@ function CapturingVegetablesAtZone2 () {
         figureColor = RgbToHsvlToColorConvert(true)
         pause(10)
     }
-    RaiseManipulator()
     pause(100)
-    OpenManipulator()
 }
 // Функция захвата овощей при старте
 function CapturingVegetablesAtStart () {
@@ -142,12 +146,10 @@ function CapturingVegetablesAtStart () {
     chassis.pivotTurn(17, 30, WheelPivot.LeftWheel)
     pause(100)
     chassis.RampLinearDistMove(10, 30, 235, 20, 60)
-    // Поднять фигурку
-    RaiseManipulator()
     pause(100)
     chassis.pivotTurn(-70, -40, WheelPivot.RightWheel)
     control.runInParallel(function () {
-        OpenManipulator()
+    	
     })
     pause(100)
     chassis.LinearDistMove(45, -30, Braking.Hold)
@@ -160,12 +162,10 @@ function CapturingVegetablesAtStart () {
     motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 200, params.SevenLineAlignmentParams(40, 0.3, 0.3, 0.3, 0.3, 0, 0))
     pause(50)
-    // Поднять фигурку
-    RaiseManipulator()
     pause(100)
     chassis.pivotTurn(-60, -30, WheelPivot.LeftWheel)
     control.runInParallel(function () {
-        OpenManipulator()
+    	
     })
     pause(50)
     chassis.pivotTurn(-60, -30, WheelPivot.RightWheel)
@@ -173,12 +173,10 @@ function CapturingVegetablesAtStart () {
     motions.MoveToRefZone(0, 35, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 200)
     pause(50)
-    // Поднять фигурку
-    RaiseManipulator()
     pause(100)
     chassis.pivotTurn(-90, -30, WheelPivot.RightWheel)
     control.runInParallel(function () {
-        OpenManipulator()
+    	
     })
     pause(50)
     chassis.pivotTurn(-87, -30, WheelPivot.LeftWheel)
@@ -207,18 +205,89 @@ function DumpingCompost () {
     chassis.syncRampMovement(-10, -40, 50, 10, 20)
     pause(50)
     for (let index = 0; index < 2; index++) {
-        BackManipulatorDrop()
         pause(200)
-        BackManipulatorStartPos()
         pause(200)
     }
-    RaiseManipulator()
     pause(10)
     chassis.pivotTurn(45, 40, WheelPivot.RightWheel)
     pause(50)
     control.runInParallel(function () {
-        OpenManipulator()
+    	
     })
+}
+function GrabbingVegetablesAtStart () {
+    chassis.pivotTurn(50, 60, WheelPivot.LeftWheel)
+    pause(200)
+    chassis.pivotTurn(46, 60, WheelPivot.RightWheel)
+    pause(100)
+    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
+    chassis.LinearDistMove(40, 60, Braking.Hold)
+    pause(400)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
+    pause(100)
+    params.SetLineAlignmentParams(40, 0.3, 0.3, 0, 0, 0.5, 0.5)
+    levelings.LineAlignment(VerticalLineLocation.Front, 1000)
+    pause(100)
+    chassis.pivotTurn(80, -50, WheelPivot.RightWheel)
+    pause(50)
+    chassis.pivotTurn(80, -50, WheelPivot.LeftWheel)
+    control.runInParallel(function () {
+        LeftManipulator(true)
+    })
+    control.runInParallel(function () {
+        RightManipulator(true)
+    })
+    pause(100)
+    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
+    chassis.LinearDistMove(40, 60, Braking.Hold)
+    pause(400)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
+    levelings.LineAlignment(VerticalLineLocation.Front, 1000)
+    pause(50)
+    chassis.LinearDistMove(170, -50, Braking.Hold)
+    pause(50)
+    chassis.spinTurn(90, 50)
+    pause(50)
+    chassis.LinearDistMove(30, 40, Braking.NoStop)
+    motions.LineFollowToDistance(300, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.3, 0))
+    motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(60, 0.2, 1))
+    pause(50)
+    chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
+    motors.mediumA.run(50)
+    motors.mediumA.pauseUntilStalled()
+    motors.mediumA.stop()
+    pause(50)
+    chassis.pivotTurn(43, -50, WheelPivot.LeftWheel)
+    pause(50)
+    chassis.LinearDistMove(100, -50, Braking.Hold)
+    pause(50)
+    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.SetFourLineFollowParams(20, 0.2, 0))
+    pause(50)
+    chassis.spinTurn(180, 50)
+    pause(50)
+    motions.LineFollowToDistance(100, AfterMotion.BreakStop)
+    pause(50)
+    chassis.spinTurn(-90, 50)
+    pause(50)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
+    levelings.LineAlignment(VerticalLineLocation.Behind, 750)
+    pause(50)
+    chassis.LinearDistMove(370, 60, Braking.Hold)
+    pause(50)
+    chassis.pivotTurn(90, 50, WheelPivot.RightWheel)
+    pause(50)
+    chassis.LinearDistMove(120, 60, Braking.Hold)
+    pause(50)
+    chassis.pivotTurn(90, 50, WheelPivot.LeftWheel)
+    pause(50)
+    motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.BreakStop)
+    pause(50)
+    control.runInParallel(function () {
+        motors.mediumD.run(50)
+        motors.mediumD.pauseUntilStalled()
+        motors.mediumD.stop()
+    })
+    levelings.LineAlignment(VerticalLineLocation.Behind, 500)
 }
 // Часть перемещения на рынок
 function TransportationToMarket () {
@@ -257,29 +326,9 @@ function TransportationToMarket () {
     chassis.spinTurn(180, 30)
     pause(50)
     for (let index = 0; index < 5; index++) {
-        BackManipulatorDrop()
         pause(200)
-        BackManipulatorStartPos()
         pause(200)
     }
-}
-// Раскрыть манипулятор
-function OpenManipulator () {
-    motors.mediumA.run(-100)
-    motors.mediumA.pauseUntilStalled()
-    motors.mediumA.stop()
-}
-// Поднять манипулятор
-function RaiseManipulator () {
-    motors.mediumA.run(40)
-    motors.mediumA.pauseUntilStalled()
-    motors.mediumA.stop()
-}
-// Задний манимулятор установить в стартовое положение
-function BackManipulatorStartPos () {
-    motors.mediumD.run(40)
-    motors.mediumD.pauseUntilStalled()
-    motors.mediumD.stop()
 }
 let column = 0
 let color = 0
@@ -289,8 +338,8 @@ let figureColor = 0
 let colors: number[] = []
 music.setVolume(20)
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
-sensors.SetLineSensorRawRefValue(LineSensor.Left, 2432, 1704)
-sensors.SetLineSensorRawRefValue(LineSensor.Right, 2452, 1580)
+sensors.SetLineSensorRawRefValue(LineSensor.Left, 2692, 1664)
+sensors.SetLineSensorRawRefValue(LineSensor.Right, 2532, 1552)
 // Установить датчику определения фигур минимальные значения RGB
 sensors.SetColorSensorMinRgbValues(sensors.color3, 0, 1, 2)
 // Установить датчику определения фигур максимальные значения RGB
@@ -304,7 +353,7 @@ pause(10)
 }
 chassis.setSeparatelyChassisMotors(motors.mediumB, motors.mediumC, true, false)
 chassis.setWheelRadius(62.4, MeasurementUnit.Millimeters)
-chassis.setBaseLength(180, MeasurementUnit.Millimeters)
+chassis.setBaseLength(185, MeasurementUnit.Millimeters)
 chassis.setSyncRegulatorGains(0.02, 0, 0.5)
 motions.SetDistRollingAfterInsetsection(50)
 motions.SetDistRollingAfterIntersectionMoveOut(20)
@@ -312,14 +361,15 @@ levelings.SetDistanceBetweenLineSensors(32)
 motions.SetLineFollowLoopDt(2)
 levelings.SetLineAlignmentOrPositioningLoopDt(2)
 motors.mediumA.setInverted(false)
+motors.mediumD.setInverted(false)
 motors.mediumA.setBrake(true)
 motors.mediumD.setBrake(true)
-if (false) {
+if (true) {
     control.runInParallel(function () {
-        // Раскрыть манипулятор перед стартом
-        OpenManipulator()
-        // Задний манипулятор на стартовую позицию
-        BackManipulatorStartPos()
+        LeftManipulator(true)
+    })
+    control.runInParallel(function () {
+        RightManipulator(true)
     })
 }
 brick.printString("PRESS TO RUN", 7, 10)
@@ -336,29 +386,7 @@ brick.showPorts()
 brick.setStatusLight(StatusLight.Off)
 // Время после старта, чтобы убрать руки
 pause(200)
-if (true) {
-    // Часть 1 - захватить все овощи после старта
-    CapturingVegetablesAtStart()
-    pause(50)
-}
-if (true) {
-    // Часть 2 - сброс жёлтых овощей в компост
-    DumpingCompost()
-    pause(50)
-}
-if (true) {
-    // Часть 3 - сброс красных овощей в компост
-    TransportationToMarket()
-    pause(50)
-}
-if (true) {
-    // Часть 4 - вытолкнуть чернозём
-    RemoveBlackSoil()
-    pause(50)
-}
-if (true) {
-    GoHome()
-}
+GrabbingVegetablesAtStart()
 // Конец программы
 pause(5000)
 brick.exitProgram()
