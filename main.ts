@@ -1,4 +1,10 @@
-function RightManipulator (_break: boolean) {
+function LeftManipulatorClose (_break: boolean) {
+    motors.mediumA.run(-20)
+    motors.mediumA.pauseUntilStalled()
+    motors.mediumA.setBrake(_break)
+    motors.mediumA.stop()
+}
+function RightManipulatorClose (_break: boolean) {
     motors.mediumD.run(-20)
     motors.mediumD.pauseUntilStalled()
     motors.mediumD.setBrake(_break)
@@ -29,12 +35,6 @@ function RgbToHsvlToColorConvert (debug: boolean) {
     }
     return color
 }
-function LeftManipulator (_break: boolean) {
-    motors.mediumA.run(-20)
-    motors.mediumA.pauseUntilStalled()
-    motors.mediumA.setBrake(_break)
-    motors.mediumA.stop()
-}
 function CapturingVegetablesAtStart () {
     chassis.pivotTurn(50, 60, WheelPivot.LeftWheel)
     pause(200)
@@ -52,10 +52,10 @@ function CapturingVegetablesAtStart () {
     pause(50)
     chassis.pivotTurn(80, -50, WheelPivot.LeftWheel)
     control.runInParallel(function () {
-        LeftManipulator(true)
+        LeftManipulatorClose(true)
     })
     control.runInParallel(function () {
-        RightManipulator(true)
+        RightManipulatorClose(true)
     })
     pause(100)
     motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
@@ -146,10 +146,10 @@ motors.mediumA.setBrake(true)
 motors.mediumD.setBrake(true)
 if (true) {
     control.runInParallel(function () {
-        LeftManipulator(true)
+        LeftManipulatorClose(true)
     })
     control.runInParallel(function () {
-        RightManipulator(true)
+        RightManipulatorClose(true)
     })
 }
 brick.printString("PRESS TO RUN", 7, 10)
