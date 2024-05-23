@@ -1,13 +1,73 @@
-function LeftManipulatorClose (_break: boolean) {
-    motors.mediumA.run(-20)
+// Выгрузить красные овощи на рынок
+function UnloadToMarket () {
+    motions.LineFollowToDistance(100, AfterMotion.BreakStop)
+    pause(100)
+    chassis.spinTurn(-90, 50)
+    pause(50)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
+    levelings.LineAlignment(VerticalLineLocation.Behind, 750)
+    pause(50)
+    chassis.RampLinearDistMove(15, 60, 370, 50, 70)
+    pause(50)
+    chassis.pivotTurn(90, 50, WheelPivot.RightWheel)
+    pause(100)
+    chassis.LinearDistMove(20, 20, Braking.Hold)
+    pause(100)
+    chassis.pivotTurn(90, 50, WheelPivot.LeftWheel)
+    pause(50)
+    motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.BreakStop)
+    params.SetLineAlignmentParams(40, 0.4, 0.4, 0, 0, 0.5, 0.5)
+    levelings.LineAlignment(VerticalLineLocation.Front, 1250)
+    control.runInParallel(function () {
+        RightGripRaise(50, 0, true)
+    })
+    pause(100)
+    chassis.LinearDistMove(30, 30, Braking.Hold)
+    pause(200)
+    chassis.LinearDistMove(60, -30, Braking.Hold)
+    pause(200)
+    chassis.spinTurn(-90, 30)
+    pause(200)
+    chassis.RampLinearDistMove(15, 60, 200, 50, 70)
+    pause(200)
+    chassis.spinTurn(-90, 30)
+    control.runInParallel(function () {
+        LeftGripRelease(100, 0, true)
+    })
+    pause(200)
+    chassis.RampLinearDistMove(15, 60, 280, 50, 70)
+    pause(200)
+    chassis.spinTurn(90, 30)
+    pause(1000)
+    chassis.LinearDistMove(120, 50, Braking.Hold)
+    control.runInParallel(function () {
+        LeftGripRaise(100, 1000, true)
+    })
+    pause(1000)
+    chassis.LinearDistMove(50, 50, Braking.Hold)
+}
+// Правый захват отпустить до конца
+function RightGripRelease (speed: number, stalledDetectionDelay: number, hold: boolean) {
+    motors.mediumD.run(Math.abs(speed) * -1)
+    pause(stalledDetectionDelay)
+    motors.mediumD.pauseUntilStalled()
+    motors.mediumD.setBrake(hold)
+    motors.mediumD.stop()
+}
+// Левый захват отпустить до конца
+function LeftGripRelease (speed: number, stalledDetectionDelay: number, hold: boolean) {
+    motors.mediumA.run(Math.abs(speed) * -1)
+    pause(stalledDetectionDelay)
     motors.mediumA.pauseUntilStalled()
-    motors.mediumA.setBrake(_break)
+    motors.mediumA.setBrake(hold)
     motors.mediumA.stop()
 }
-function RightManipulatorClose (_break: boolean) {
-    motors.mediumD.run(-20)
+// Правый захват поднять до конца
+function RightGripRaise (speed: number, stalledDetectionDelay: number, hold: boolean) {
+    motors.mediumD.run(Math.abs(speed))
+    pause(stalledDetectionDelay)
     motors.mediumD.pauseUntilStalled()
-    motors.mediumD.setBrake(_break)
+    motors.mediumD.setBrake(hold)
     motors.mediumD.stop()
 }
 function RgbToHsvlToColorConvert (debug: boolean) {
@@ -35,6 +95,7 @@ function RgbToHsvlToColorConvert (debug: boolean) {
     }
     return color
 }
+// Захват овощей у зоны старта
 function CapturingVegetablesAtStart () {
     chassis.pivotTurn(50, 60, WheelPivot.LeftWheel)
     pause(100)
@@ -45,18 +106,12 @@ function CapturingVegetablesAtStart () {
     pause(400)
     motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
     pause(100)
-    params.SetLineAlignmentParams(40, 0.3, 0.3, 0, 0, 0.5, 0.5)
+    params.SetLineAlignmentShortParams(40, 0.3, 0.3, 0.5, 0.5)
     levelings.LineAlignment(VerticalLineLocation.Front, 1000)
     pause(100)
     chassis.pivotTurn(80, -50, WheelPivot.RightWheel)
     pause(50)
     chassis.pivotTurn(80, -50, WheelPivot.LeftWheel)
-    control.runInParallel(function () {
-        LeftManipulatorClose(true)
-    })
-    control.runInParallel(function () {
-        RightManipulatorClose(true)
-    })
     pause(100)
     motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
     chassis.LinearDistMove(40, 40, Braking.Hold)
@@ -67,20 +122,24 @@ function CapturingVegetablesAtStart () {
     chassis.RampLinearDistMove(-15, -30, 170, 50, 50)
     pause(50)
     chassis.spinTurn(90, 40)
+    pause(100)
+    chassis.LinearDistMove(30, 40, Braking.NoStop)
 }
 // Часть сброса компоста
 function DumpingCompost () {
-    chassis.LinearDistMove(30, 40, Braking.NoStop)
-    pause(50)
-    motions.LineFollowToDistance(300, AfterMotion.NoStop, params.SetFourLineFollowParams(30, 0.3, 0))
-    motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.SetFourLineFollowParams(60, 0.2, 1))
-    motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.SetFourLineFollowParams(30, 0.3, 0))
+    if (true) {
+        motions.AccelStartLineFollow(300, params.RampLineFollowFiveParams(10, 60, 0.3, 0))
+        motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.LineFollowFourParams(60, 0.2, 1))
+        motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
+    } else {
+        motions.LineFollowToDistance(300, AfterMotion.NoStop, params.LineFollowFourParams(30, 0.3, 0))
+        motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.LineFollowFourParams(60, 0.2, 1))
+        motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
+    }
     pause(50)
     chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
     control.runInParallel(function () {
-        motors.mediumA.run(50)
-        motors.mediumA.pauseUntilStalled()
-        motors.mediumA.stop()
+        LeftGripRelease(50, 0, true)
     })
     pause(200)
     chassis.LinearDistMove(50, 40, Braking.Hold)
@@ -91,63 +150,17 @@ function DumpingCompost () {
     pause(100)
     chassis.RampLinearDistMove(-15, -50, 120, 30, 50)
     pause(100)
-    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.SetFourLineFollowParams(20, 0.2, 0))
+    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(20, 0.2, 0))
     pause(100)
     chassis.spinTurn(180, 50)
-    pause(100)
-    motions.LineFollowToDistance(100, AfterMotion.BreakStop)
-    pause(100)
-    chassis.spinTurn(-90, 50)
-    pause(50)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Behind, 750)
-    pause(50)
-    chassis.RampLinearDistMove(15, 60, 370, 50, 70)
-    pause(50)
-    chassis.pivotTurn(90, 50, WheelPivot.RightWheel)
-    pause(100)
-    chassis.LinearDistMove(20, 20, Braking.Hold)
-    pause(100)
-    chassis.pivotTurn(90, 50, WheelPivot.LeftWheel)
-    pause(50)
-    motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.BreakStop)
-    pause(50)
-    params.SetLineAlignmentParams(40, 0.4, 0.4, 0, 0, 0.5, 0.5)
-    levelings.LineAlignment(VerticalLineLocation.Front, 1250)
-    control.runInParallel(function () {
-        motors.mediumD.run(50)
-        motors.mediumD.pauseUntilStalled()
-        motors.mediumD.stop()
-    })
-    pause(100)
-    chassis.LinearDistMove(30, 30, Braking.Hold)
-    pause(200)
-    chassis.LinearDistMove(60, -30, Braking.Hold)
-    pause(200)
-    chassis.spinTurn(-90, 30)
-    pause(200)
-    chassis.RampLinearDistMove(15, 60, 200, 50, 70)
-    pause(200)
-    chassis.spinTurn(-90, 30)
-    control.runInParallel(function () {
-        motors.mediumA.run(-100)
-        motors.mediumA.pauseUntilStalled()
-        motors.mediumA.stop()
-    })
-    pause(200)
-    chassis.RampLinearDistMove(15, 60, 280, 50, 70)
-    pause(200)
-    chassis.spinTurn(90, 30)
-    pause(1000)
-    chassis.LinearDistMove(120, 50, Braking.Hold)
-    control.runInParallel(function () {
-        motors.mediumA.run(100)
-        pause(1000)
-        motors.mediumA.pauseUntilStalled()
-        motors.mediumA.stop()
-    })
-    pause(1000)
-    chassis.LinearDistMove(50, 50, Braking.Hold)
+}
+// Левый захват поднять до конца
+function LeftGripRaise (speed: number, stalledDetectionDelay: number, hold: boolean) {
+    motors.mediumA.run(Math.abs(speed))
+    pause(stalledDetectionDelay)
+    motors.mediumA.pauseUntilStalled()
+    motors.mediumA.setBrake(hold)
+    motors.mediumA.stop()
 }
 let column = 0
 let color = 0
@@ -182,12 +195,13 @@ motors.mediumA.setInverted(false)
 motors.mediumD.setInverted(false)
 motors.mediumA.setBrake(true)
 motors.mediumD.setBrake(true)
+// Привести захваты в стартовое положение
 if (true) {
     control.runInParallel(function () {
-        LeftManipulatorClose(true)
+        LeftGripRelease(20, 100, true)
     })
     control.runInParallel(function () {
-        RightManipulatorClose(true)
+        RightGripRelease(20, 100, true)
     })
 }
 brick.printString("PRESS TO RUN", 7, 10)
@@ -214,6 +228,11 @@ if (true) {
     pause(50)
     DumpingCompost()
 }
+if (true) {
+    // Время после старта, чтобы убрать руки
+    pause(100)
+    UnloadToMarket()
+}
 // Конец программы
-pause(5000)
+pause(2000)
 brick.exitProgram()
