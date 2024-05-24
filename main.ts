@@ -128,9 +128,14 @@ function CapturingVegetablesAtStart () {
 // Часть сброса компоста
 function DumpingCompost () {
     if (true) {
-        motions.AccelStartLineFollow(300, params.RampLineFollowFiveParams(10, 60, 0.3, 0))
-        motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.LineFollowFourParams(60, 0.2, 1))
-        motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
+        if (true) {
+            motions.RampLineFollowToDistance(1500, 100, 150, Braking.NoStop, params.RampLineFollowFiveParams(10, 60, 0.3, 1))
+            motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
+        } else {
+            motions.AccelStartLineFollow(300, params.RampLineFollowFiveParams(10, 60, 0.3, 0))
+            motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.LineFollowFourParams(60, 0.2, 1))
+            motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
+        }
     } else {
         motions.LineFollowToDistance(300, AfterMotion.NoStop, params.LineFollowFourParams(30, 0.3, 0))
         motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.LineFollowFourParams(60, 0.2, 1))
