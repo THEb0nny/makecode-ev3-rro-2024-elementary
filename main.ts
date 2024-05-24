@@ -119,7 +119,7 @@ function CapturingVegetablesAtStart () {
     motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 80, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 1000)
     pause(50)
-    chassis.RampLinearDistMove(-15, -30, 170, 50, 50)
+    chassis.RampLinearDistMove(-15, -30, 180, 50, 50)
     pause(50)
     chassis.spinTurn(90, 40)
     pause(100)
@@ -129,8 +129,8 @@ function CapturingVegetablesAtStart () {
 function DumpingCompost () {
     if (true) {
         if (true) {
-            motions.RampLineFollowToDistance(1500, 100, 150, Braking.NoStop, params.RampLineFollowFiveParams(10, 60, 0.3, 1))
-            motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
+            motions.RampLineFollowToDistance(1500, 150, 0, Braking.NoStop, params.RampLineFollowFiveParams(20, 60, 0.3, 1))
+            motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(10, 0.3, 0))
         } else {
             motions.AccelStartLineFollow(300, params.RampLineFollowFiveParams(10, 60, 0.3, 0))
             motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.LineFollowFourParams(60, 0.2, 1))
@@ -144,7 +144,7 @@ function DumpingCompost () {
     pause(50)
     chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
     control.runInParallel(function () {
-        LeftGripRelease(50, 0, true)
+        LeftGripRaise(50, 0, true)
     })
     pause(200)
     chassis.LinearDistMove(50, 40, Braking.Hold)
