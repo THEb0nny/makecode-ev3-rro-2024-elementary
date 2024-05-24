@@ -1,6 +1,6 @@
 {
     "name": "runRRO2024E",
-    "version": "0.1.43",
+    "version": "0.1.44",
     "description": "",
     "dependencies": {
         "ev3": "*",
