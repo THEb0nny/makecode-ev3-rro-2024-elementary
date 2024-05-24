@@ -6,45 +6,60 @@ function UnloadToMarket () {
     pause(50)
     motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Behind, 750)
-    pause(50)
+    pause(100)
     chassis.RampLinearDistMove(15, 60, 370, 50, 70)
-    pause(50)
+    pause(100)
     chassis.pivotTurn(90, 50, WheelPivot.RightWheel)
     pause(100)
-    chassis.LinearDistMove(20, 20, Braking.Hold)
+    chassis.LinearDistMove(40, 20, Braking.Hold)
     pause(100)
     chassis.pivotTurn(90, 50, WheelPivot.LeftWheel)
     pause(50)
     motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.BreakStop)
-    params.SetLineAlignmentParams(40, 0.4, 0.4, 0, 0, 0.5, 0.5)
+    sensors.SetLineSensorRawRefValue(LineSensor.Left, 2432, 1688)
+    sensors.SetLineSensorRawRefValue(LineSensor.Right, 2380, 1664)
+    params.SetLineAlignmentShortParams(40, 0.3, 0.3, 0.5, 0.5)
     levelings.LineAlignment(VerticalLineLocation.Front, 1250)
     control.runInParallel(function () {
         RightGripRaise(50, 0, true)
     })
     pause(100)
-    chassis.LinearDistMove(30, 30, Braking.Hold)
+    chassis.LinearDistMove(30, 20, Braking.Hold)
     pause(200)
-    chassis.LinearDistMove(60, -30, Braking.Hold)
+    chassis.LinearDistMove(60, -20, Braking.Hold)
     pause(200)
     chassis.spinTurn(-90, 30)
     pause(200)
-    chassis.RampLinearDistMove(15, 60, 200, 50, 70)
+    chassis.RampLinearDistMove(15, 60, 220, 50, 70)
     pause(200)
     chassis.spinTurn(-90, 30)
     control.runInParallel(function () {
         LeftGripRelease(100, 0, true)
     })
-    pause(200)
-    chassis.RampLinearDistMove(15, 60, 280, 50, 70)
-    pause(200)
+    control.runInParallel(function () {
+        RightGripRelease(100, 0, true)
+    })
+    pause(100)
+    chassis.RampLinearDistMove(15, 60, 310, 50, 70)
+    pause(100)
     chassis.spinTurn(90, 30)
-    pause(1000)
-    chassis.LinearDistMove(120, 50, Braking.Hold)
+    pause(100)
+    chassis.LinearDistMove(140, 50, Braking.Hold)
+    pause(100)
     control.runInParallel(function () {
         LeftGripRaise(100, 1000, true)
     })
-    pause(1000)
-    chassis.LinearDistMove(50, 50, Braking.Hold)
+    control.runInParallel(function () {
+        RightGripRaise(100, 1000, true)
+    })
+    pause(200)
+    RightGripRelease(100, 0, true)
+    pause(200)
+    chassis.pivotTurn(5, 30, WheelPivot.LeftWheel)
+    pause(100)
+    chassis.LinearDistMove(80, 50, Braking.Hold)
+    pause(500)
+    chassis.LinearDistMove(100, -50, Braking.Hold)
 }
 // Правый захват отпустить до конца
 function RightGripRelease (speed: number, stalledDetectionDelay: number, hold: boolean) {
@@ -97,9 +112,7 @@ function RgbToHsvlToColorConvert (debug: boolean) {
 }
 // Захват овощей у зоны старта
 function CapturingVegetablesAtStart () {
-    chassis.pivotTurn(50, 60, WheelPivot.LeftWheel)
-    pause(100)
-    chassis.pivotTurn(47, 55, WheelPivot.RightWheel)
+    chassis.pivotTurn(10, 60, WheelPivot.LeftWheel)
     pause(100)
     motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
     chassis.LinearDistMove(40, 60, Braking.Hold)
@@ -129,8 +142,8 @@ function CapturingVegetablesAtStart () {
 function DumpingCompost () {
     if (true) {
         if (true) {
-            motions.RampLineFollowToDistance(1500, 150, 0, Braking.NoStop, params.RampLineFollowFiveParams(20, 60, 0.3, 1))
-            motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(10, 0.3, 0))
+            motions.RampLineFollowToDistance(1500, 150, 100, Braking.NoStop, params.RampLineFollowFiveParams(30, 60, 0.3, 0.8))
+            motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
         } else {
             motions.AccelStartLineFollow(300, params.RampLineFollowFiveParams(10, 60, 0.3, 0))
             motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.LineFollowFourParams(60, 0.2, 1))
@@ -173,8 +186,8 @@ let hsvlCS: number[] = []
 let rgbCS: number[] = []
 music.setVolume(20)
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
-sensors.SetLineSensorRawRefValue(LineSensor.Left, 2500, 1744)
-sensors.SetLineSensorRawRefValue(LineSensor.Right, 2432, 1656)
+sensors.SetLineSensorRawRefValue(LineSensor.Left, 2436, 1800)
+sensors.SetLineSensorRawRefValue(LineSensor.Right, 2376, 1700)
 // Установить датчику определения фигур минимальные значения RGB
 sensors.SetColorSensorMinRgbValues(sensors.color3, 0, 1, 2)
 // Установить датчику определения фигур максимальные значения RGB
