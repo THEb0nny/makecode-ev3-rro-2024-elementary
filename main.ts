@@ -7,9 +7,10 @@ function UnloadToMarket () {
     motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Behind, 750)
     pause(100)
+    // Может проехать больше, чтобы далее попасть сразу на красную зону маркета и отъезжать наоборот назад на белую линию? Для того, чтобы не касаться забора
     chassis.RampLinearDistMove(15, 60, 370, 50, 70)
     pause(100)
-    chassis.pivotTurn(89, 50, WheelPivot.RightWheel)
+    chassis.pivotTurn(90, 50, WheelPivot.RightWheel)
     pause(100)
     chassis.LinearDistMove(40, 20, Braking.Hold)
     pause(100)
@@ -21,36 +22,13 @@ function UnloadToMarket () {
     params.SetLineAlignmentShortParams(40, 0.3, 0.3, 0.5, 0.5)
     levelings.LineAlignment(VerticalLineLocation.Front, 1250)
     control.runInParallel(function () {
-        RightGripRaise(50, 0, true)
+        grib.LiftGrip(Grip.Right, 50)
     })
     pause(100)
+    // Толкнуть вперёд
     chassis.LinearDistMove(30, 20, Braking.Hold)
     pause(100)
     chassis.LinearDistMove(60, -20, Braking.Hold)
-}
-// Правый захват отпустить до конца
-function RightGripRelease (speed: number, stalledDetectionDelay: number, hold: boolean) {
-    motors.mediumD.run(Math.abs(speed) * -1)
-    pause(stalledDetectionDelay)
-    motors.mediumD.pauseUntilStalled()
-    motors.mediumD.setBrake(hold)
-    motors.mediumD.stop()
-}
-// Левый захват отпустить до конца
-function LeftGripRelease (speed: number, stalledDetectionDelay: number, hold: boolean) {
-    motors.mediumA.run(Math.abs(speed) * -1)
-    pause(stalledDetectionDelay)
-    motors.mediumA.pauseUntilStalled()
-    motors.mediumA.setBrake(hold)
-    motors.mediumA.stop()
-}
-// Правый захват поднять до конца
-function RightGripRaise (speed: number, stalledDetectionDelay: number, hold: boolean) {
-    motors.mediumD.run(Math.abs(speed))
-    pause(stalledDetectionDelay)
-    motors.mediumD.pauseUntilStalled()
-    motors.mediumD.setBrake(hold)
-    motors.mediumD.stop()
 }
 function GreenhouseOne () {
     chassis.spinTurn(-90, 30)
@@ -59,30 +37,44 @@ function GreenhouseOne () {
     pause(100)
     chassis.spinTurn(-90, 30)
     control.runInParallel(function () {
-        LeftGripRelease(100, 0, true)
+        grib.LowerGrip(Grip.Left, 100)
     })
     control.runInParallel(function () {
-        RightGripRelease(100, 0, true)
+        grib.LowerGrip(Grip.Right, 100)
     })
     pause(100)
     chassis.RampLinearDistMove(15, 60, 310, 50, 70)
     pause(100)
     chassis.spinTurn(90, 30)
     pause(100)
-    chassis.LinearDistMove(140, 50, Braking.Hold)
+    if (true) {
+        chassis.RampLinearDistMoveWithoutBraking(10, 60, 150, 50)
+        pause(300)
+        chassis.stop(true)
+        pause(100)
+        chassis.LinearDistMove(100, -30, Braking.Hold)
+    } else {
+        chassis.RampLinearDistMove(15, 60, 140, 50, 70)
+    }
     pause(100)
     control.runInParallel(function () {
-        LeftGripRaise(100, 1000, true)
+        grib.LiftGrip(Grip.Left, 100, 1000)
     })
     control.runInParallel(function () {
-        RightGripRaise(100, 1000, true)
+        grib.LiftGrip(Grip.Right, 100, 1000)
     })
     pause(1200)
-    RightGripRelease(100, 0, true)
+    grib.LowerGrip(Grip.Left, 100)
     pause(100)
     chassis.pivotTurn(5, 30, WheelPivot.LeftWheel)
     pause(100)
-    chassis.LinearDistMove(80, 50, Braking.Hold)
+    if (true) {
+        chassis.RampLinearDistMoveWithoutBraking(15, 50, 80, 500)
+        pause(200)
+        chassis.stop(true)
+    } else {
+        chassis.LinearDistMove(80, 50, Braking.Hold)
+    }
     pause(100)
     chassis.LinearDistMove(100, -50, Braking.Hold)
 }
@@ -118,7 +110,7 @@ function CapturingVegetablesAtStart () {
     motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
     chassis.LinearDistMove(40, 60, Braking.Hold)
     pause(400)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 90, AfterMotion.BreakStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
     pause(100)
     params.SetLineAlignmentShortParams(40, 0.3, 0.3, 0.5, 0.5)
     levelings.LineAlignment(VerticalLineLocation.Front, 1000)
@@ -130,23 +122,23 @@ function CapturingVegetablesAtStart () {
     motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
     chassis.LinearDistMove(40, 40, Braking.Hold)
     pause(400)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 80, AfterMotion.BreakStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 1000)
-    pause(50)
+    pause(100)
     chassis.RampLinearDistMove(-15, -30, 180, 50, 50)
     pause(50)
     chassis.spinTurn(90, 40)
     pause(100)
-    chassis.LinearDistMove(30, 40, Braking.NoStop)
+    chassis.LinearDistMove(30, 30, Braking.NoStop)
 }
 // Часть сброса компоста
 function DumpingCompost () {
-    motions.RampLineFollowToDistance(1500, 150, 100, Braking.NoStop, params.RampLineFollowSixParams(15, 60, 30, 0.3, 0.3))
+    motions.RampLineFollowToDistance(1500, 150, 100, Braking.NoStop, params.RampLineFollowSixParams(30, 60, 30, 0.3, 0.3))
     motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
-    pause(50)
+    pause(100)
     chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
     control.runInParallel(function () {
-        LeftGripRaise(50, 0, true)
+        grib.LiftGrip(Grip.Left, 50)
     })
     pause(200)
     chassis.LinearDistMove(50, 40, Braking.Hold)
@@ -157,17 +149,9 @@ function DumpingCompost () {
     pause(100)
     chassis.RampLinearDistMove(-15, -50, 120, 30, 50)
     pause(100)
-    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(20, 0.2, 0))
+    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(20, 0.3, 0))
     pause(100)
     chassis.spinTurn(180, 50)
-}
-// Левый захват поднять до конца
-function LeftGripRaise (speed: number, stalledDetectionDelay: number, hold: boolean) {
-    motors.mediumA.run(Math.abs(speed))
-    pause(stalledDetectionDelay)
-    motors.mediumA.pauseUntilStalled()
-    motors.mediumA.setBrake(hold)
-    motors.mediumA.stop()
 }
 let column = 0
 let color = 0
@@ -203,10 +187,10 @@ motors.mediumD.setBrake(true)
 // Привести захваты в стартовое положение
 if (true) {
     control.runInParallel(function () {
-        LeftGripRelease(20, 100, true)
+        grib.LowerGrip(Grip.Left, 20, 100)
     })
     control.runInParallel(function () {
-        RightGripRelease(20, 100, true)
+        grib.LowerGrip(Grip.Right, 20, 100)
     })
 }
 brick.printString("PRESS TO RUN", 7, 10)
@@ -218,7 +202,7 @@ while (true) {
     } else if (brick.buttonRight.wasPressed()) {
         break;
     } else if (brick.buttonUp.wasPressed()) {
-        motions.RampLineFollowToDistance(1500, 200, 100, Braking.NoStop, params.RampLineFollowSixParams(15, 60, 30, 0.3, 0.5))
+        motions.RampLineFollowToDistance(1500, 200, 100, Braking.NoStop, params.RampLineFollowSixParams(20, 60, 30, 0.3, 0.5))
         music.playToneInBackground(740, music.beat(BeatFraction.Half))
         motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
     }
@@ -232,7 +216,7 @@ if (true) {
 }
 if (true) {
     // Время после старта, чтобы убрать руки
-    pause(50)
+    pause(100)
     DumpingCompost()
 }
 if (true) {
