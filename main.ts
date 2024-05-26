@@ -141,14 +141,8 @@ function CapturingVegetablesAtStart () {
 // Часть сброса компоста
 function DumpingCompost () {
     if (true) {
-        if (true) {
-            motions.RampLineFollowToDistance(1500, 150, 100, Braking.NoStop, params.RampLineFollowFiveParams(30, 60, 0.3, 0.8))
-            motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
-        } else {
-            motions.AccelStartLineFollow(300, params.RampLineFollowFiveParams(10, 60, 0.3, 0))
-            motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.LineFollowFourParams(60, 0.2, 1))
-            motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
-        }
+        motions.RampLineFollowToDistance(1500, 150, 100, Braking.NoStop, params.RampLineFollowSixParams(15, 60, 30, 0.3, 0.5))
+        motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
     } else {
         motions.LineFollowToDistance(300, AfterMotion.NoStop, params.LineFollowFourParams(30, 0.3, 0))
         motions.LineFollowToDistance(1200, AfterMotion.NoStop, params.LineFollowFourParams(60, 0.2, 1))
@@ -194,10 +188,8 @@ sensors.SetColorSensorMinRgbValues(sensors.color3, 0, 1, 2)
 sensors.SetColorSensorMaxRgbValues(sensors.color3, 204, 190, 243)
 // Заспамить командой, чтобы датчик цвета включился в режиме цвета
 for (let index = 0; index < 10; index++) {
-    sensors.color3.rgbRaw()
-sensors.nxtLight1.light(NXTLightIntensityMode.ReflectedRaw);
-sensors.nxtLight4.light(NXTLightIntensityMode.ReflectedRaw);
-pause(10)
+    custom.PreparingSensors()
+    pause(10)
 }
 chassis.setSeparatelyChassisMotors(motors.mediumB, motors.mediumC, true, false)
 chassis.setWheelRadius(62.4, MeasurementUnit.Millimeters)
@@ -231,7 +223,9 @@ while (true) {
     } else if (brick.buttonRight.wasPressed()) {
         break;
     } else if (brick.buttonUp.wasPressed()) {
-        chassis.RampLinearDistMove(15, 50, 200, 50, 100)
+        motions.RampLineFollowToDistance(1500, 200, 100, Braking.NoStop, params.RampLineFollowSixParams(15, 60, 30, 0.3, 0.5))
+        music.playToneInBackground(740, music.beat(BeatFraction.Whole))
+        motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
     }
 }
 brick.showPorts()
