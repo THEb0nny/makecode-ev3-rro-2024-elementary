@@ -49,7 +49,7 @@ namespace grib {
     export function LowerGrip(grip: Grip, speed: number, stalledDetectionDelay: number = 0, hold: boolean = true) {
         let motor: motors.Motor;
         if (grip == Grip.Left) motor = motors.mediumA;
-        else if (grip == Grip.Right) motor = motors.mediumC;
+        else if (grip == Grip.Right) motor = motors.mediumD;
         else return;
         motor.run(Math.abs(speed) * -1);
         pause(stalledDetectionDelay);
@@ -75,7 +75,7 @@ namespace grib {
     export function LiftGrip(grip: Grip, speed: number, stalledDetectionDelay: number = 0, hold: boolean = true) {
         let motor: motors.Motor;
         if (grip == Grip.Left) motor = motors.mediumA;
-        else if (grip == Grip.Right) motor = motors.mediumC;
+        else if (grip == Grip.Right) motor = motors.mediumD;
         else return;
         motor.run(Math.abs(speed));
         pause(stalledDetectionDelay);

@@ -3,20 +3,21 @@ function UnloadToMarket () {
     motions.LineFollowToDistance(100, AfterMotion.BreakStop)
     pause(100)
     chassis.spinTurn(-90, 50)
-    pause(50)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
+    pause(100)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.NoStop)
     levelings.LineAlignment(VerticalLineLocation.Behind, 750)
     pause(100)
     // Может проехать больше, чтобы далее попасть сразу на красную зону маркета и отъезжать наоборот назад на белую линию? Для того, чтобы не касаться забора
-    chassis.RampLinearDistMove(15, 60, 370, 50, 70)
+    chassis.RampLinearDistMove(15, 70, 440, 50, 70)
     pause(100)
     chassis.pivotTurn(90, 50, WheelPivot.RightWheel)
     pause(100)
-    chassis.LinearDistMove(40, 20, Braking.Hold)
+    chassis.LinearDistMove(30, 20, Braking.Hold)
     pause(100)
     chassis.pivotTurn(90, 50, WheelPivot.LeftWheel)
-    pause(50)
-    motions.MoveToRefZone(0, 20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.BreakStop)
+    pause(100)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 80, AfterMotion.BreakStop)
     sensors.SetLineSensorRawRefValue(LineSensor.Left, 2432, 1688)
     sensors.SetLineSensorRawRefValue(LineSensor.Right, 2380, 1664)
     params.SetLineAlignmentShortParams(40, 0.3, 0.3, 0.5, 0.5)
@@ -31,9 +32,10 @@ function UnloadToMarket () {
     chassis.LinearDistMove(60, -20, Braking.Hold)
 }
 function GreenhouseOne () {
+    let vegetableColors: number[] = []
     chassis.spinTurn(-90, 30)
     pause(100)
-    chassis.RampLinearDistMove(15, 60, 220, 50, 70)
+    chassis.RampLinearDistMove(15, 80, 270, 50, 70)
     pause(100)
     chassis.spinTurn(-90, 30)
     control.runInParallel(function () {
@@ -43,19 +45,20 @@ function GreenhouseOne () {
         grib.LowerGrip(Grip.Right, 100)
     })
     pause(100)
-    chassis.RampLinearDistMove(15, 60, 310, 50, 70)
+    chassis.RampLinearDistMove(15, 80, 300, 50, 70)
     pause(100)
     chassis.spinTurn(90, 30)
     pause(100)
-    if (true) {
-        chassis.RampLinearDistMoveWithoutBraking(10, 60, 150, 50)
-        pause(300)
-        chassis.stop(true)
-        pause(100)
-        chassis.LinearDistMove(100, -30, Braking.Hold)
-    } else {
-        chassis.RampLinearDistMove(15, 60, 140, 50, 70)
-    }
+    chassis.RampLinearDistMoveWithoutBraking(10, 30, 110, 50)
+    chassis.steeringCommand(0, 30)
+    pause(500)
+    chassis.stop(true)
+    pause(100)
+    chassis.steeringCommand(-200, 10)
+    pause(500)
+    chassis.stop(true)
+    pause(100)
+    chassis.LinearDistMove(30, -30, Braking.Hold)
     pause(100)
     control.runInParallel(function () {
         grib.LiftGrip(Grip.Left, 100, 1000)
@@ -63,20 +66,66 @@ function GreenhouseOne () {
     control.runInParallel(function () {
         grib.LiftGrip(Grip.Right, 100, 1000)
     })
-    pause(1200)
-    grib.LowerGrip(Grip.Left, 100)
+    pause(1000)
+    grib.LowerGrip(Grip.Right, 100)
     pause(100)
-    chassis.pivotTurn(5, 30, WheelPivot.LeftWheel)
+    chassis.pivotTurn(2, 30, WheelPivot.LeftWheel)
     pause(100)
-    if (true) {
-        chassis.RampLinearDistMoveWithoutBraking(15, 50, 80, 500)
-        pause(200)
-        chassis.stop(true)
-    } else {
-        chassis.LinearDistMove(80, 50, Braking.Hold)
+    chassis.RampLinearDistMoveWithoutBraking(15, 40, 80, 500)
+    chassis.steeringCommand(0, 20)
+    pause(500)
+    chassis.stop(true)
+    pause(100)
+    checkVegetableColor = true
+    control.runInParallel(function () {
+        while (checkVegetableColor) {
+            colorTmp = RgbToHsvlToColorConvert(true)
+            if (colorTmp == 4 || colorTmp == 7 || colorTmp == 5) {
+                vegetableColors.push(colorTmp)
+            }
+            pause(20)
+        }
+    })
+    chassis.RampLinearDistMove(-10, -60, 200, 50, 70)
+    pause(100)
+    chassis.spinTurn(-90, 50)
+    pause(100)
+    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.DecelRolling)
+    checkVegetableColor = false
+    vegetableColor = custom.MostFrequentNumber(vegetableColors)
+    brick.clearScreen()
+    brick.printValue("vegetebleColor", vegetableColor, 1)
+    music.setVolume(100)
+    if (vegetableColor == 4 || vegetableColor == 7) {
+        music.playSoundEffect(sounds.colorsYellow)
+    } else if (vegetableColor == 5) {
+        music.playSoundEffect(sounds.colorsRed)
     }
+    control.runInParallel(function () {
+        pause(2000)
+        music.setVolume(20)
+    })
     pause(100)
-    chassis.LinearDistMove(100, -50, Braking.Hold)
+    chassis.spinTurn(90, 50)
+    pause(100)
+    motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling)
+    pause(100)
+    if (vegetableColor == 4 || vegetableColor == 7) {
+        chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
+        control.runInParallel(function () {
+            grib.LiftGrip(Grip.Right, 50)
+        })
+        pause(200)
+        chassis.LinearDistMove(50, 40, Braking.Hold)
+        pause(100)
+        chassis.LinearDistMove(50, -40, Braking.Hold)
+        pause(100)
+        chassis.pivotTurn(41, -50, WheelPivot.LeftWheel)
+        pause(100)
+        chassis.RampLinearDistMove(-15, -50, 120, 30, 50)
+    } else if (vegetableColor == 5) {
+    	
+    }
 }
 function RgbToHsvlToColorConvert (debug: boolean) {
     rgbCS = sensors.color3.rgbRaw()
@@ -88,7 +137,7 @@ function RgbToHsvlToColorConvert (debug: boolean) {
     // Получаем HSVL
     hsvlCS = sensors.RgbToHsvlConverter(rgbCS)
     // Переводим HSVL в цветовой код
-    color = sensors.HsvlToColorNum(hsvlCS, sensors.HsvlToColorNumParams(50, 10, 1, 25, 30, 100, 180, 260))
+    color = sensors.HsvlToColorNum(hsvlCS, sensors.HsvlToColorNumParams(50, 10, 1, 20, 25, 100, 180, 260))
     if (debug) {
         column = 20
         brick.clearScreen()
@@ -107,22 +156,24 @@ function RgbToHsvlToColorConvert (debug: boolean) {
 function CapturingVegetablesAtStart () {
     chassis.pivotTurn(10, 60, WheelPivot.LeftWheel)
     pause(100)
-    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
-    chassis.LinearDistMove(40, 60, Braking.Hold)
+    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
+    chassis.LinearDistMove(30, 60, Braking.Hold)
     pause(400)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 80, AfterMotion.BreakStop)
     pause(100)
     params.SetLineAlignmentShortParams(40, 0.3, 0.3, 0.5, 0.5)
     levelings.LineAlignment(VerticalLineLocation.Front, 1000)
     pause(100)
-    chassis.pivotTurn(80, -50, WheelPivot.RightWheel)
+    chassis.pivotTurn(85, -50, WheelPivot.RightWheel)
     pause(50)
-    chassis.pivotTurn(80, -50, WheelPivot.LeftWheel)
+    chassis.pivotTurn(85, -50, WheelPivot.LeftWheel)
     pause(100)
     motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
-    chassis.LinearDistMove(40, 40, Braking.Hold)
+    chassis.LinearDistMove(30, 40, Braking.Hold)
     pause(400)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 80, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 1000)
     pause(100)
     chassis.RampLinearDistMove(-15, -30, 180, 50, 50)
@@ -133,7 +184,7 @@ function CapturingVegetablesAtStart () {
 }
 // Часть сброса компоста
 function DumpingCompost () {
-    motions.RampLineFollowToDistance(1500, 150, 100, Braking.NoStop, params.RampLineFollowSixParams(30, 60, 30, 0.3, 0.3))
+    motions.RampLineFollowToDistance(1500, 150, 100, Braking.NoStop, params.RampLineFollowSixParams(30, 60, 30, 0.2, 0.3))
     motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
     pause(100)
     chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
@@ -157,14 +208,17 @@ let column = 0
 let color = 0
 let hsvlCS: number[] = []
 let rgbCS: number[] = []
+let vegetableColor = 0
+let colorTmp = 0
+let checkVegetableColor = false
 music.setVolume(20)
 sensors.SetNxtLightSensorsAsLineSensors(sensors.nxtLight1, sensors.nxtLight4)
 sensors.SetLineSensorRawRefValue(LineSensor.Left, 2436, 1800)
 sensors.SetLineSensorRawRefValue(LineSensor.Right, 2376, 1700)
 // Установить датчику определения фигур минимальные значения RGB
-sensors.SetColorSensorMinRgbValues(sensors.color3, 0, 1, 2)
+sensors.SetColorSensorMinRgbValues(sensors.color3, 10, 12, 10)
 // Установить датчику определения фигур максимальные значения RGB
-sensors.SetColorSensorMaxRgbValues(sensors.color3, 204, 190, 243)
+sensors.SetColorSensorMaxRgbValues(sensors.color3, 93, 104, 67)
 // Заспамить командой, чтобы датчик цвета включился в режиме цвета
 for (let index = 0; index < 10; index++) {
     custom.PreparingSensors()
@@ -175,7 +229,7 @@ chassis.setWheelRadius(62.4, MeasurementUnit.Millimeters)
 chassis.setBaseLength(185, MeasurementUnit.Millimeters)
 chassis.setSyncRegulatorGains(0.02, 0, 0.5)
 motions.SetLineFollowRefTreshold(40)
-motions.SetDistRollingAfterInsetsection(50)
+motions.SetDistRollingAfterInsetsection(35)
 motions.SetDistRollingAfterIntersectionMoveOut(20)
 levelings.SetDistanceBetweenLineSensors(32)
 motions.SetLineFollowLoopDt(2)
@@ -202,9 +256,14 @@ while (true) {
     } else if (brick.buttonRight.wasPressed()) {
         break;
     } else if (brick.buttonUp.wasPressed()) {
-        motions.RampLineFollowToDistance(1500, 200, 100, Braking.NoStop, params.RampLineFollowSixParams(20, 60, 30, 0.3, 0.5))
+        motions.RampLineFollowToDistance(1500, 200, 100, Braking.NoStop, params.RampLineFollowSixParams(20, 60, 30, 0.3, 0))
         music.playToneInBackground(740, music.beat(BeatFraction.Half))
         motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
+    } else if (brick.buttonDown.wasPressed()) {
+        sensors.SearchRgbMaxColorSensors()
+        while (true) {
+            RgbToHsvlToColorConvert(true)
+        }
     }
 }
 brick.showPorts()
@@ -230,5 +289,5 @@ if (true) {
     GreenhouseOne()
 }
 // Конец программы
-pause(2000)
+pause(10000)
 brick.exitProgram()
