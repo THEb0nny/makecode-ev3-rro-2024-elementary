@@ -154,7 +154,7 @@ function RgbToHsvlToColorConvert (debug: boolean) {
 }
 // Захват овощей у зоны старта
 function CapturingVegetablesAtStart () {
-    chassis.pivotTurn(10, 60, WheelPivot.LeftWheel)
+    chassis.pivotTurn(9, 60, WheelPivot.LeftWheel)
     pause(100)
     motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
     chassis.LinearDistMove(30, 60, Braking.Hold)
@@ -163,18 +163,18 @@ function CapturingVegetablesAtStart () {
     motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 80, AfterMotion.BreakStop)
     pause(100)
     params.SetLineAlignmentShortParams(40, 0.3, 0.3, 0.5, 0.5)
-    levelings.LineAlignment(VerticalLineLocation.Front, 1000)
+    levelings.LineAlignment(VerticalLineLocation.Front, 800)
     pause(100)
     chassis.pivotTurn(85, -50, WheelPivot.RightWheel)
     pause(50)
     chassis.pivotTurn(85, -50, WheelPivot.LeftWheel)
     pause(100)
-    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
+    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
     chassis.LinearDistMove(30, 40, Braking.Hold)
     pause(400)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 20, AfterMotion.NoStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
     motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 80, AfterMotion.BreakStop)
-    levelings.LineAlignment(VerticalLineLocation.Front, 1000)
+    levelings.LineAlignment(VerticalLineLocation.Front, 800)
     pause(100)
     chassis.RampLinearDistMove(-15, -30, 180, 50, 50)
     pause(50)
@@ -260,7 +260,7 @@ while (true) {
         music.playToneInBackground(740, music.beat(BeatFraction.Half))
         motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
     } else if (brick.buttonDown.wasPressed()) {
-        sensors.SearchRgbMaxColorSensors()
+        sensors.SearchRgbMinMaxColorSensors(sensors.color3)
         while (true) {
             RgbToHsvlToColorConvert(true)
         }
