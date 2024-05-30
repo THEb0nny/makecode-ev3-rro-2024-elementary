@@ -12,6 +12,39 @@ namespace custom {
         sensors.nxtLight1.light(NXTLightIntensityMode.ReflectedRaw);
         sensors.nxtLight4.light(NXTLightIntensityMode.ReflectedRaw);
     }
+
+    /**
+     * Предварительный запуск датчиков внужный режим.
+     */
+    //% blockId="GetColor"
+    //% block="get color||debug $debug"
+    //% block.loc.ru="получить цвет||отладка $debug"
+    //% inlineInputMode="inline"
+    //% expandableArgumentMode="enabled"
+    //% debug.shadow="toggleOnOff"
+    //% weight="79"
+    export function GetColor(debug: boolean = false): number {
+        const rgbCS = sensors.color3.rgbRaw(); // Нормализуем значения с датчика
+        for (let i = 0; i <= 2; i++) {
+            rgbCS[i] = Math.map(rgbCS[i], sensors.GetMinRgbColorSensor(sensors.color3)[i], sensors.GetMaxRgbColorSensor(sensors.color3)[i], 0, 255);
+            rgbCS[i] = Math.constrain(rgbCS[i], 0, 255);
+        }
+        const hsvlCS = sensors.RgbToHsvlConverter(rgbCS); // Получаем HSVL
+        const color = sensors.HsvlToColorNum(hsvlCS, sensors.GetHsvlToColorNumParams(sensors.color3)); // Переводим HSVL в цветовой код
+        if (debug) {
+            const column = 20;
+            brick.clearScreen();
+            brick.printValue("r", rgbCS[0], 1, column);
+            brick.printValue("g", rgbCS[1], 2, column);
+            brick.printValue("b", rgbCS[2], 3, column);
+            brick.printValue("hue", hsvlCS[0], 5, column);
+            brick.printValue("sat", hsvlCS[1], 6, column);
+            brick.printValue("val", hsvlCS[2], 7, column);
+            brick.printValue("light", hsvlCS[3], 8, column);
+            brick.printValue("color", color, 10, column);
+        }
+        return color;
+    }
 }
 
 const enum Grip {
