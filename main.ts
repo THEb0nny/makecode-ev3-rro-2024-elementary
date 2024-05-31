@@ -157,7 +157,7 @@ function GreenhouseOne () {
         chassis.spinTurn(90, 50)
     }
     pause(100)
-    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(20, 0.3, 0))
+    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(30, 0.3, 0))
     pause(100)
     chassis.spinTurn(180, 50)
 }
@@ -256,16 +256,19 @@ function GreenhouseTwo () {
         })
         pause(100)
         chassis.pivotTurn(40, -50, WheelPivot.LeftWheel)
-        pause(1000)
+        pause(100)
         motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
-        pause(1000)
+        pause(100)
         sensors.SetLineSensorRawRefValue(LineSensor.Left, 2500, 1748)
         sensors.SetLineSensorRawRefValue(LineSensor.Right, 2420, 1640)
         levelings.LineAlignment(VerticalLineLocation.Front, 1000)
-        pause(1000)
+        pause(100)
         VegetablesInZoneTwoAtMarketPosition()
     }
     pause(100)
+    VegetablesPosition2()
+}
+function VegetablesPosition2 () {
     levelings.LineAlignment(VerticalLineLocation.Front, 1000)
     pause(100)
     if (GreenhouseOneVegetebleColor == 4 && GreenhouseTwoVegetebleColor == 4) {
@@ -295,16 +298,97 @@ function GreenhouseTwo () {
         } else if (rightGripVegetableColor == 5) {
             music.playSoundEffectUntilDone(sounds.colorsRed)
         }
-        pause(1500)
+        pause(500)
         if (leftGripVegetableColor == 4) {
             music.playSoundEffectUntilDone(sounds.colorsYellow)
         } else if (leftGripVegetableColor == 5) {
             music.playSoundEffectUntilDone(sounds.colorsRed)
         }
-        pause(2000)
+        pause(500)
         music.setVolume(20)
     })
-    pause(1000)
+    pause(500)
+    chassis.spinTurn(-90, 50)
+    pause(100)
+    colorTmp = leftGripVegetableColor + rightGripVegetableColor
+    if (colorTmp == 10 || colorTmp == 9) {
+        chassis.RampLinearDistMove(15, 70, 280, 50, 100)
+        pause(100)
+        chassis.spinTurn(90, 50)
+        pause(100)
+        motions.MoveToRefZone(0, 30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
+        pause(100)
+        if (colorTmp == 10) {
+            control.runInParallel(function () {
+                grib.LiftGrip(Grip.Left, 100, 200)
+                leftGripVegetableColor = 0
+            })
+            control.runInParallel(function () {
+                grib.LiftGrip(Grip.Right, 100, 200)
+                rightGripVegetableColor = 0
+            })
+        } else if (leftGripVegetableColor == 5) {
+            control.runInParallel(function () {
+                grib.LiftGrip(Grip.Left, 100, 200)
+                leftGripVegetableColor = 0
+            })
+        } else if (rightGripVegetableColor == 5) {
+            control.runInParallel(function () {
+                grib.LiftGrip(Grip.Right, 100, 200)
+                rightGripVegetableColor = 0
+            })
+        }
+        chassis.pivotTurn(25, 50, WheelPivot.LeftWheel)
+        pause(200)
+        chassis.pivotTurn(25, -50, WheelPivot.LeftWheel)
+        pause(100)
+        levelings.LineAlignment(VerticalLineLocation.Front, 1000)
+        pause(100)
+        chassis.RampLinearDistMove(-15, -50, 100, 50, 50)
+        pause(100)
+        chassis.spinTurn(-90, 50)
+        pause(100)
+        chassis.RampLinearDistMove(15, 80, 950, 50, 100)
+    } else {
+        pause(2000)
+        chassis.RampLinearDistMove(15, 60, 100, 50, 50)
+        pause(2000)
+        chassis.RampLinearDistMove(15, 80, 1200, 50, 100)
+    }
+    pause(100)
+    chassis.spinTurn(-90, 50)
+    pause(100)
+    chassis.RampLinearDistMoveWithoutBraking(15, 50, 300, 50)
+    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.DecelRolling)
+    pause(100)
+    chassis.spinTurn(90, 50)
+    pause(100)
+    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(30, 0.3, 0))
+    if (leftGripVegetableColor == 4 || rightGripVegetableColor == 4) {
+        chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
+        if (leftGripVegetableColor == 4) {
+            control.runInParallel(function () {
+                grib.LiftGrip(Grip.Left, 100, 100)
+            })
+        }
+        if (rightGripVegetableColor == 4) {
+            control.runInParallel(function () {
+                grib.LiftGrip(Grip.Right, 100, 100)
+            })
+        }
+        pause(100)
+        chassis.LinearDistMove(50, 40, Braking.Hold)
+        pause(200)
+        chassis.LinearDistMove(50, -40, Braking.Hold)
+        pause(100)
+        chassis.pivotTurn(41, -50, WheelPivot.LeftWheel)
+        pause(100)
+        chassis.RampLinearDistMove(-15, -70, 120, 30, 50)
+        pause(100)
+        motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(30, 0.3, 0))
+    }
+    pause(100)
+    chassis.spinTurn(180, 50)
 }
 // Захват овощей у зоны старта
 function CapturingVegetablesAtStart () {
@@ -370,7 +454,7 @@ function VegetablesInZoneTwoAtCompostPosition () {
     pause(100)
     chassis.spinTurn(-90, 30)
     pause(100)
-    chassis.RampLinearDistMove(15, 70, 170, 50, 70)
+    chassis.RampLinearDistMove(15, 8, 170, 50, 70)
     pause(100)
     chassis.spinTurn(90, 30)
     pause(100)
@@ -387,13 +471,13 @@ function VegetablesInZoneTwoAtCompostPosition () {
 }
 function VegetablesInZoneTwoAtMarketPosition () {
     chassis.RampLinearDistMove(-15, -70, 150, 50, 50)
-    pause(500)
+    pause(100)
     chassis.spinTurn(90, 50)
-    pause(500)
+    pause(100)
     chassis.RampLinearDistMove(15, 80, 300, 50, 100)
-    pause(500)
+    pause(100)
     chassis.spinTurn(-90, 50)
-    pause(500)
+    pause(100)
     chassis.RampLinearDistMoveWithoutBraking(15, 30, 100, 50)
     motions.MoveToRefZone(0, 30, LineSensorSelection.LeftAndRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
     pause(100)
@@ -489,11 +573,12 @@ if (false) {
     // Время после старта, чтобы убрать руки
     pause(100)
     GreenhouseOne()
+} else {
+    GreenhouseOneVegetebleColor = 5
 }
 if (true) {
     // Время после старта, чтобы убрать руки
     pause(100)
-    GreenhouseOneVegetebleColor = 5
     GreenhouseTwo()
 }
 // Конец программы
