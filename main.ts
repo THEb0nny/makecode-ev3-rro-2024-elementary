@@ -298,7 +298,7 @@ function VegetablesPosition2 () {
         } else if (rightGripVegetableColor == 5) {
             music.playSoundEffectUntilDone(sounds.colorsRed)
         }
-        pause(500)
+        pause(200)
         if (leftGripVegetableColor == 4) {
             music.playSoundEffectUntilDone(sounds.colorsYellow)
         } else if (leftGripVegetableColor == 5) {
@@ -308,10 +308,10 @@ function VegetablesPosition2 () {
         music.setVolume(20)
     })
     pause(500)
-    chassis.spinTurn(-90, 50)
-    pause(100)
     colorTmp = leftGripVegetableColor + rightGripVegetableColor
     if (colorTmp == 10 || colorTmp == 9) {
+        chassis.spinTurn(-90, 50)
+        pause(100)
         chassis.RampLinearDistMove(15, 70, 280, 50, 100)
         pause(100)
         chassis.spinTurn(90, 50)
@@ -344,16 +344,17 @@ function VegetablesPosition2 () {
         pause(100)
         levelings.LineAlignment(VerticalLineLocation.Front, 1000)
         pause(100)
-        chassis.RampLinearDistMove(-15, -50, 100, 50, 50)
+        chassis.RampLinearDistMove(-15, -60, 80, 40, 50)
         pause(100)
         chassis.spinTurn(-90, 50)
         pause(100)
         chassis.RampLinearDistMove(15, 80, 950, 50, 100)
     } else {
-        pause(2000)
         chassis.RampLinearDistMove(15, 60, 100, 50, 50)
+        pause(100)
+        chassis.spinTurn(-90, 50)
         pause(2000)
-        chassis.RampLinearDistMove(15, 80, 1200, 50, 100)
+        chassis.RampLinearDistMove(15, 80, 1300, 50, 100)
     }
     pause(100)
     chassis.spinTurn(-90, 50)
