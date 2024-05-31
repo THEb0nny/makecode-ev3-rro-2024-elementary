@@ -128,18 +128,7 @@ function GreenhouseOne () {
     motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(20, 0.3, 0))
     pause(100)
     if (vegetableColor == 4) {
-        chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
-        control.runInParallel(function () {
-            grib.LiftGrip(Grip.Right, 100, 100)
-        })
-        pause(200)
-        chassis.LinearDistMove(50, 40, Braking.Hold)
-        pause(200)
-        chassis.LinearDistMove(50, -40, Braking.Hold)
-        pause(100)
-        chassis.pivotTurn(41, -50, WheelPivot.LeftWheel)
-        pause(100)
-        chassis.RampLinearDistMove(-15, -70, 120, 30, 50)
+        UploadToCompost(false, true)
     } else if (vegetableColor == 5) {
         chassis.spinTurn(180, 50)
         pause(100)
@@ -155,11 +144,11 @@ function GreenhouseOne () {
         motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.DecelRolling)
         pause(100)
         chassis.spinTurn(90, 50)
+        pause(100)
+        motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(30, 0.3, 0))
+        pause(100)
+        chassis.spinTurn(180, 50)
     }
-    pause(100)
-    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(30, 0.3, 0))
-    pause(100)
-    chassis.spinTurn(180, 50)
 }
 // Работа с теплицой 2
 function GreenhouseTwo () {
@@ -220,25 +209,8 @@ function GreenhouseTwo () {
         motions.RampLineFollowToDistance(400, 100, 100, Braking.NoStop, params.RampLineFollowSixParams(15, 50, 30, 0.2, 0.3))
         motions.LineFollowToCrossIntersection(AfterMotion.DecelRolling, params.LineFollowFourParams(30, 0.3, 0))
         pause(100)
-        chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
-        control.runInParallel(function () {
-            grib.LiftGrip(Grip.Right, 100, 100, false)
-        })
-        pause(100)
-        chassis.LinearDistMove(50, 50, Braking.Hold)
-        pause(200)
-        chassis.LinearDistMove(50, -50, Braking.Hold)
-        pause(100)
-        chassis.pivotTurn(40, -50, WheelPivot.LeftWheel)
-        pause(100)
-        chassis.RampLinearDistMove(-15, -70, 120, 30, 50)
-        pause(100)
-        motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(30, 0.3, 0))
-        pause(100)
-        chassis.spinTurn(180, 50)
-        pause(100)
-        // Овощи из второй зоны при позиции робота с компоста
-        VegetablesInZoneTwoAtCompostPosition()
+        UploadToCompost(false, true)
+        posAfterTwoGreenhouse = 0
     } else if (vegetableColor == 5) {
         chassis.spinTurn(90, 50)
         pause(100)
@@ -270,10 +242,34 @@ function GreenhouseTwo () {
         pause(50)
         sensors.SetLineSensorsRawRefValues(2500, 2420, 1748, 1640)
         levelings.LineAlignment(VerticalLineLocation.Front, 1000)
-        pause(100)
-        // Овощи второй зоны из позиции робота на рынке
-        VegetablesInZoneTwoAtMarketPosition()
+        posAfterTwoGreenhouse = 1
     }
+}
+// Выгрузить в компост
+function UploadToCompost (upLeftGrap: boolean, upRightGrap: boolean) {
+    chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
+    if (upLeftGrap) {
+        control.runInParallel(function () {
+            grib.LiftGrip(Grip.Left, 100, 100, false)
+        })
+    }
+    if (upRightGrap) {
+        control.runInParallel(function () {
+            grib.LiftGrip(Grip.Right, 100, 100, false)
+        })
+    }
+    pause(100)
+    chassis.LinearDistMove(50, 50, Braking.Hold)
+    pause(200)
+    chassis.LinearDistMove(50, -50, Braking.Hold)
+    pause(100)
+    chassis.pivotTurn(40, -50, WheelPivot.LeftWheel)
+    pause(100)
+    chassis.RampLinearDistMove(-15, -70, 120, 30, 50)
+    pause(100)
+    motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(30, 0.3, 0))
+    pause(100)
+    chassis.spinTurn(180, 50)
 }
 function VegetablesPositionTwo () {
     levelings.LineAlignment(VerticalLineLocation.Front, 1000)
@@ -501,6 +497,7 @@ let GreenhouseTwoVegetebleColor = 0
 let vegetableColors: number[] = []
 let vegetableColor = 0
 let checkVegetableColor = false
+let posAfterTwoGreenhouse = 0
 let GreenhouseOneVegetebleColor = 0
 let colorTmp = 0
 music.setVolume(20)
@@ -592,6 +589,18 @@ if (true) {
     // Время после старта, чтобы убрать руки
     pause(100)
     GreenhouseTwo()
+}
+if (true) {
+    pause(100)
+    if (posAfterTwoGreenhouse == 0) {
+        // Овощи из второй зоны при позиции робота с компоста
+        VegetablesInZoneTwoAtCompostPosition()
+    } else if (posAfterTwoGreenhouse == 1) {
+        // Овощи второй зоны из позиции робота на рынке
+        VegetablesInZoneTwoAtMarketPosition()
+    } else {
+        control.panic(90)
+    }
 }
 if (true) {
     pause(100)
