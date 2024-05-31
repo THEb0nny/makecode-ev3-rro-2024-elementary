@@ -7,17 +7,17 @@ function FinishCheckVegetableColor () {
     }
     brick.clearScreen()
     brick.printValue("vegetebleColor", vegetableColor, 1)
-    music.setVolume(100)
-    if (vegetableColor == 4) {
-        music.playSoundEffect(sounds.colorsYellow)
-    } else if (vegetableColor == 5) {
-        music.playSoundEffect(sounds.colorsRed)
-    } else {
-        music.playSoundEffectUntilDone(sounds.informationErrorAlarm)
-        control.panic(99)
-    }
     control.runInParallel(function () {
-        pause(2000)
+        music.setVolume(100)
+        if (vegetableColor == 4) {
+            music.playSoundEffectUntilDone(sounds.colorsYellow)
+        } else if (vegetableColor == 5) {
+            music.playSoundEffectUntilDone(sounds.colorsRed)
+        } else {
+            music.playSoundEffectUntilDone(sounds.informationErrorAlarm)
+            control.panic(99)
+        }
+        pause(100)
         music.setVolume(20)
     })
 }
@@ -170,7 +170,7 @@ function GreenhouseTwo () {
         grib.LowerGrip(Grip.Right, 50, 100)
     })
     motions.RampLineFollowToDistance(520, 50, 100, Braking.Hold, params.RampLineFollowThreeParams(15, 50, 15))
-    pause(200)
+    pause(100)
     chassis.spinTurn(-90, 100)
     pause(100)
     motions.MoveToRefZone(0, -30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.NoStop)
@@ -274,12 +274,11 @@ function GreenhouseTwo () {
         // Овощи второй зоны из позиции робота на рынке
         VegetablesInZoneTwoAtMarketPosition()
     }
-    pause(100)
-    VegetablesPosition2()
 }
-function VegetablesPosition2 () {
+function VegetablesPositionTwo () {
     levelings.LineAlignment(VerticalLineLocation.Front, 1000)
     pause(100)
+    // Предварительная проверка что было в теплицах для того, чтобы не проверять в лишний раз
     if (GreenhouseOneVegetebleColor == 4 && GreenhouseTwoVegetebleColor == 4) {
         rightGripVegetableColor = 5
         leftGripVegetableColor = 5
@@ -289,13 +288,15 @@ function VegetablesPosition2 () {
     } else {
         StartCheckVegetableColor()
     }
-    chassis.RampLinearDistMove(-15, -60, 100, 50, 50)
+    chassis.RampLinearDistMove(-15, -80, 100, 50, 50)
+    pause(100)
     if (GreenhouseOneVegetebleColor != GreenhouseTwoVegetebleColor) {
-        pause(100)
         chassis.spinTurn(10, 20)
-        pause(200)
-        chassis.spinTurn(-10, 20)
-        pause(200)
+        pause(100)
+        chassis.spinTurn(-20, 20)
+        pause(100)
+        chassis.spinTurn(20, 20)
+        pause(100)
         FinishCheckVegetableColor()
         rightGripVegetableColor = vegetableColor
         leftGripVegetableColor = 18 - (GreenhouseOneVegetebleColor + GreenhouseTwoVegetebleColor + rightGripVegetableColor)
@@ -313,85 +314,80 @@ function VegetablesPosition2 () {
         } else if (leftGripVegetableColor == 5) {
             music.playSoundEffectUntilDone(sounds.colorsRed)
         }
-        pause(500)
+        pause(100)
         music.setVolume(20)
     })
-    pause(500)
+    pause(100)
+    // Посчитать какое количество в сумме в левом и правом захвате
     colorTmp = leftGripVegetableColor + rightGripVegetableColor
     if (colorTmp == 10 || colorTmp == 9) {
         chassis.spinTurn(-90, 50)
         pause(100)
-        chassis.RampLinearDistMove(15, 70, 280, 50, 100)
+        chassis.RampLinearDistMove(15, 80, 280, 50, 100)
         pause(100)
         chassis.spinTurn(90, 50)
         pause(100)
         motions.MoveToRefZone(0, 30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
         pause(100)
-        if (colorTmp == 10) {
+        if (leftGripVegetableColor == 5) {
             control.runInParallel(function () {
-                grib.LiftGrip(Grip.Left, 100, 200)
+                grib.LiftGrip(Grip.Left, 100, 200, false)
                 leftGripVegetableColor = 0
             })
+        }
+        if (rightGripVegetableColor == 5) {
             control.runInParallel(function () {
-                grib.LiftGrip(Grip.Right, 100, 200)
-                rightGripVegetableColor = 0
-            })
-        } else if (leftGripVegetableColor == 5) {
-            control.runInParallel(function () {
-                grib.LiftGrip(Grip.Left, 100, 200)
-                leftGripVegetableColor = 0
-            })
-        } else if (rightGripVegetableColor == 5) {
-            control.runInParallel(function () {
-                grib.LiftGrip(Grip.Right, 100, 200)
+                grib.LiftGrip(Grip.Right, 100, 200, false)
                 rightGripVegetableColor = 0
             })
         }
+        pause(100)
         chassis.pivotTurn(25, 50, WheelPivot.LeftWheel)
         pause(200)
         chassis.pivotTurn(25, -50, WheelPivot.LeftWheel)
         pause(100)
         levelings.LineAlignment(VerticalLineLocation.Front, 1000)
         pause(100)
-        chassis.RampLinearDistMove(-15, -60, 80, 40, 50)
+        chassis.RampLinearDistMove(-15, -80, 80, 40, 50)
         pause(100)
         chassis.spinTurn(-90, 50)
         pause(100)
         chassis.RampLinearDistMove(15, 80, 950, 50, 100)
     } else {
-        chassis.RampLinearDistMove(15, 60, 100, 50, 50)
+        chassis.RampLinearDistMove(15, 80, 100, 50, 50)
         pause(100)
         chassis.spinTurn(-90, 50)
-        pause(2000)
+        pause(100)
         chassis.RampLinearDistMove(15, 80, 1300, 50, 100)
     }
     pause(100)
     chassis.spinTurn(-90, 50)
     pause(100)
-    chassis.RampLinearDistMoveWithoutBraking(15, 50, 300, 50)
-    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.DecelRolling)
+    chassis.RampLinearDistMoveWithoutBraking(15, 60, 300, 50)
+    motions.MoveToRefZone(0, 60, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.DecelRolling)
     pause(100)
     chassis.spinTurn(90, 50)
     pause(100)
     motions.LineFollowToCrossIntersection(AfterMotion.BreakStop, params.LineFollowFourParams(30, 0.3, 0))
+    // Если какой-нибудь из захватов не пустой
     if (leftGripVegetableColor == 4 || rightGripVegetableColor == 4) {
         chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
         if (leftGripVegetableColor == 4) {
             control.runInParallel(function () {
-                grib.LiftGrip(Grip.Left, 100, 100)
+                grib.LiftGrip(Grip.Left, 100, 100, false)
             })
         }
         if (rightGripVegetableColor == 4) {
             control.runInParallel(function () {
-                grib.LiftGrip(Grip.Right, 100, 100)
+                grib.LiftGrip(Grip.Right, 100, 100, false)
             })
         }
         pause(100)
-        chassis.LinearDistMove(50, 40, Braking.Hold)
+        chassis.LinearDistMove(50, 50, Braking.Hold)
         pause(200)
-        chassis.LinearDistMove(50, -40, Braking.Hold)
+        chassis.LinearDistMove(50, -50, Braking.Hold)
         pause(100)
-        chassis.pivotTurn(41, -50, WheelPivot.LeftWheel)
+        chassis.pivotTurn(40, -50, WheelPivot.LeftWheel)
         pause(100)
         chassis.RampLinearDistMove(-15, -70, 120, 30, 50)
         pause(100)
@@ -402,13 +398,13 @@ function VegetablesPosition2 () {
 }
 // Захват овощей у зоны старта
 function CapturingVegetablesAtStart () {
-    chassis.pivotTurn(10, 60, WheelPivot.LeftWheel)
+    chassis.pivotTurn(10, 50, WheelPivot.LeftWheel)
     pause(100)
-    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
+    motions.MoveToRefZone(0, 60, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
     chassis.LinearDistMove(30, 60, Braking.Hold)
     pause(400)
     motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 80, AfterMotion.BreakStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
     pause(100)
     params.SetLineAlignmentShortParams(40, 0.3, 0.3, 0.5, 0.5)
     levelings.LineAlignment(VerticalLineLocation.Front, 800)
@@ -417,11 +413,11 @@ function CapturingVegetablesAtStart () {
     pause(50)
     chassis.pivotTurn(85, -50, WheelPivot.LeftWheel)
     pause(100)
-    motions.MoveToRefZone(0, 50, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
-    chassis.LinearDistMove(30, 40, Braking.Hold)
+    motions.MoveToRefZone(0, 60, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
+    chassis.LinearDistMove(30, 60, Braking.Hold)
     pause(400)
     motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Less, 30, AfterMotion.NoStop)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 80, AfterMotion.BreakStop)
+    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
     levelings.LineAlignment(VerticalLineLocation.Front, 800)
     pause(100)
     chassis.RampLinearDistMove(-15, -30, 180, 50, 50)
@@ -437,14 +433,14 @@ function DumpingCompost () {
     pause(100)
     chassis.pivotTurn(45, 50, WheelPivot.LeftWheel)
     control.runInParallel(function () {
-        grib.LiftGrip(Grip.Left, 50)
+        grib.LiftGrip(Grip.Left, 50, 100, false)
     })
     pause(200)
-    chassis.LinearDistMove(50, 40, Braking.Hold)
+    chassis.LinearDistMove(50, 50, Braking.Hold)
     pause(200)
     chassis.LinearDistMove(50, -40, Braking.Hold)
     pause(100)
-    chassis.pivotTurn(41, -50, WheelPivot.LeftWheel)
+    chassis.pivotTurn(40, -50, WheelPivot.LeftWheel)
     pause(100)
     chassis.RampLinearDistMove(-15, -50, 120, 30, 50)
     pause(100)
@@ -452,35 +448,36 @@ function DumpingCompost () {
     pause(100)
     chassis.spinTurn(180, 50)
 }
+// Функция двигаться до овощей втоой зоны из зоны компоста
 function VegetablesInZoneTwoAtCompostPosition () {
     motions.RampLineFollowToDistance(1550, 150, 150, Braking.Hold, params.RampLineFollowSixParams(15, 60, 15, 0.2, 0.3))
     pause(100)
     chassis.spinTurn(-90, 50)
     pause(100)
-    motions.MoveToRefZone(0, -20, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.NoStop)
+    motions.MoveToRefZone(0, -30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.NoStop)
     levelings.LineAlignment(VerticalLineLocation.Behind, 1000)
     pause(100)
     chassis.RampLinearDistMove(15, 80, 400, 50, 100)
     pause(100)
-    chassis.spinTurn(-90, 30)
+    chassis.spinTurn(-90, 50)
     pause(100)
-    chassis.RampLinearDistMove(15, 8, 170, 50, 70)
+    chassis.RampLinearDistMove(15, 80, 170, 50, 70)
     pause(100)
-    chassis.spinTurn(90, 30)
+    chassis.spinTurn(90, 50)
     pause(100)
     chassis.RampLinearDistMoveWithoutBraking(15, 30, 50, 50)
-    pause(100)
-    motions.MoveToRefZone(0, 30, LineSensorSelection.LeftAndRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
+    motions.MoveToRefZone(0, 30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
     pause(100)
     control.runInParallel(function () {
-        grib.LowerGrip(Grip.Left, 100)
+        grib.LowerGrip(Grip.Left, 100, 0)
     })
     control.runInParallel(function () {
-        grib.LowerGrip(Grip.Right, 100)
+        grib.LowerGrip(Grip.Right, 100, 0)
     })
 }
+// Функция движения до второй зоны овощей с рынка
 function VegetablesInZoneTwoAtMarketPosition () {
-    chassis.RampLinearDistMove(-15, -70, 150, 50, 50)
+    chassis.RampLinearDistMove(-15, -80, 150, 50, 50)
     pause(100)
     chassis.spinTurn(90, 50)
     pause(100)
@@ -489,13 +486,13 @@ function VegetablesInZoneTwoAtMarketPosition () {
     chassis.spinTurn(-90, 50)
     pause(100)
     chassis.RampLinearDistMoveWithoutBraking(15, 30, 100, 50)
-    motions.MoveToRefZone(0, 30, LineSensorSelection.LeftAndRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
+    motions.MoveToRefZone(0, 30, LineSensorSelection.LeftOrRight, LogicalOperators.Greater, 70, AfterMotion.BreakStop)
     pause(100)
     control.runInParallel(function () {
-        grib.LowerGrip(Grip.Left, 100)
+        grib.LowerGrip(Grip.Left, 100, 0)
     })
     control.runInParallel(function () {
-        grib.LowerGrip(Grip.Right, 100)
+        grib.LowerGrip(Grip.Right, 100, 0)
     })
 }
 let leftGripVegetableColor = 0
@@ -595,6 +592,10 @@ if (true) {
     // Время после старта, чтобы убрать руки
     pause(100)
     GreenhouseTwo()
+}
+if (true) {
+    pause(100)
+    VegetablesPositionTwo()
 }
 // Конец программы
 pause(5000)
